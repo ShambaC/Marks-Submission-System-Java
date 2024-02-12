@@ -4,8 +4,10 @@
 # Log file
 *.log
 
+# Build binaries
+build
+
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
