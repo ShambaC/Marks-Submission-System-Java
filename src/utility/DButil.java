@@ -21,9 +21,10 @@ public class DButil {
      * @param DBUser        The user to login into the database
      * @param DBPassword    The password for the user account
      */
-    public DButil(String DBaddress, String DBUser, String DBPassword) throws ClassNotFoundException {
-        Class.forName("org.mariadb.jdbc.Driver");
+    public DButil(String DBaddress, String DBUser, String DBPassword) {
         try {
+            // Load the mariadb jdbc driver
+            Class.forName("org.mariadb.jdbc.Driver");
             // Create connection to the DB
             conn = DriverManager.getConnection("jdbc:mariadb://"+ DBaddress + "/", DBUser, DBPassword);
 
@@ -58,7 +59,7 @@ public class DButil {
             // Open the connection to the required database
             conn = DriverManager.getConnection("jdbc:mariadb://"+ DBaddress + "/mss", DBUser, DBPassword);
         }
-        catch(SQLException err) {
+        catch(SQLException | ClassNotFoundException err) {
             err.printStackTrace();
         }
     }
