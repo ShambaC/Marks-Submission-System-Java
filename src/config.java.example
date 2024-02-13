@@ -3,4 +3,9 @@
 
 public class config {
     public static final String envFileLocation = "";
+
+    // Database connection details
+    public static final String DBaddress = "";
+    public static final String DBUser = "";
+    public static final String DBPassword = "";
 }

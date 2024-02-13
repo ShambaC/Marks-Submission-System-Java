@@ -6,6 +6,7 @@
 
 # Build binaries
 build
+bin
 
 # Eclipse files
 .settings
@@ -21,4 +22,6 @@ replay_pid*
 
 # App config file
 src/config.java
-bin/config.java.example
+
+# Environment files
+src/.env
