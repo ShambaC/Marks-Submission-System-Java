@@ -8,12 +8,14 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
-/*
+/**
  * An Utility class to load env files into java projects
  */
 
 public class envUtil {
-
+    /**
+     * The map storing the key value pairs of the env file
+     */
     private Map<String, String> envHashMap = new HashMap<String, String>();
 
     /**

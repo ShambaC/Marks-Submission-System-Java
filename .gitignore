@@ -25,3 +25,6 @@ src/config.java
 
 # Environment files
 src/.env
+
+# JavaDocs
+docs

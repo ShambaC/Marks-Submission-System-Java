@@ -6,12 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/*
+/**
  * Utility class to perform SQL queries on mariaDB
  */
 
 public class DButil {
-    // The connection to the Database
+    /**
+     * The connection to the Database
+     */
     private Connection conn;
 
     /**
@@ -85,5 +87,12 @@ public class DButil {
                 err.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Initializes the database by creating the required tables
+     */
+    public void dbInit() {
+
     }
 }
