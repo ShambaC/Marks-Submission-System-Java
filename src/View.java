@@ -1,8 +1,8 @@
 import javax.swing.JFrame;
 
-public class App extends JFrame {
+public class View extends JFrame {
     
-    public App() {
+    public View() {
 
     }
 
