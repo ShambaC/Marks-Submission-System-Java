@@ -1,4 +1,4 @@
-create table student
+create table `student`
 (
     roll int(6) primary key,
     coll varchar(3),

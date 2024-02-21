@@ -28,3 +28,6 @@ src/.env
 
 # JavaDocs
 docs
+
+# Test file
+src/test.java
