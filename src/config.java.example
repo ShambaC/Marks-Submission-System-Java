@@ -2,10 +2,14 @@
 // Then rename this file to config.java
 
 public class config {
+    // Env location
     public static final String envFileLocation = "";
 
     // Database connection details
     public static final String DBaddress = "";
     public static final String DBUser = "";
     public static final String DBPassword = "";
+
+    // Databse schema details location
+    public static final String schemaLocation = "";
 }
