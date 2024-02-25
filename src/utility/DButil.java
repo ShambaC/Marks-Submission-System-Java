@@ -1,7 +1,6 @@
 package utility;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -175,7 +174,7 @@ public class DButil {
 
                 if(tableName.equalsIgnoreCase("marks"))     isMarksTableExist = true;
                 if(tableName.equalsIgnoreCase("paper"))     isPaperTableExist = true;
-                if(tableName.equalsIgnoreCase("student"))   isStudentTableExist = true;
+                if(tableName.equalsIgnoreCase("studentTable"))   isStudentTableExist = true;
                 if(tableName.equalsIgnoreCase("userTable"))      isUserTableExist = true;
             }
             res.close();
