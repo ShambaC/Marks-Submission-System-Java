@@ -19,7 +19,7 @@ public class DButil {
     /**
      * The connection to the Database
      */
-    private Connection conn;
+    private static Connection conn;
 
     /**
      * String to store the location of the schemas
@@ -35,6 +35,8 @@ public class DButil {
      * @param pathToSchema  Stores the path to the schema folder
      */
     public DButil(String DBaddress, String DBUser, String DBPassword, String pathToSchema) {
+        if(conn != null)    return;
+
         try {
             //Initialize the schema path
             this.pathToSchema = pathToSchema;
