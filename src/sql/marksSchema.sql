@@ -1,7 +1,8 @@
 create table marks
 (
     roll int(6) references studentTable(roll),
-    paperCode varchar(8) references paper(paperCode),
+    paperName varchar(30),
+    paperCode varchar(8),
     paperType varchar(2),
     half varchar(5),
     FullMarks int(3),

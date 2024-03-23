@@ -165,7 +165,6 @@ public class DButil {
      */
     public void dbInit() {
         boolean isMarksTableExist = false;
-        boolean isPaperTableExist = false;
         boolean isStudentTableExist = false;
         boolean isUserTableExist = false;
 
@@ -175,7 +174,6 @@ public class DButil {
                 String tableName = res.getString(3);
 
                 if(tableName.equalsIgnoreCase("marks"))     isMarksTableExist = true;
-                if(tableName.equalsIgnoreCase("paper"))     isPaperTableExist = true;
                 if(tableName.equalsIgnoreCase("studentTable"))   isStudentTableExist = true;
                 if(tableName.equalsIgnoreCase("userTable"))      isUserTableExist = true;
             }
@@ -191,13 +189,6 @@ public class DButil {
             }
             if(!isStudentTableExist) {
                 statementList = generateStatementFromFile(pathToSchema + "studentSchema.sql");
-                for(String s : statementList) {
-                    int ret = executeUpdateStatement(s);
-                    System.out.println(ret + " rows effected!");
-                }
-            }
-            if(!isPaperTableExist) {
-                statementList = generateStatementFromFile(pathToSchema + "paperSchema.sql");
                 for(String s : statementList) {
                     int ret = executeUpdateStatement(s);
                     System.out.println(ret + " rows effected!");
