@@ -1,4 +1,4 @@
-package transferObjects;
+package model.transferObjects;
 
 public class marksTO {
     public int roll;
