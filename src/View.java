@@ -1,4 +1,5 @@
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -281,7 +282,32 @@ public class View extends JFrame {
         forgotForm.add(OTPFieldGroup);
         forgotForm.add(sendOTPBtn);
         forgotForm.add(cancelBtn);
+        
+        // Reset Password Form
+        JPanel resetPasswordForm = new JPanel(new GridLayout(3, 2, 10, 10));
+        resetPasswordForm.setPreferredSize(new Dimension(500, 150));
+        resetPasswordForm.setBackground(new Color(206, 215, 246));
+
+        TitledBorder resetPasswordBorder = new TitledBorder("Reset Password");
+        resetPasswordBorder.setTitleJustification(TitledBorder.CENTER);
+        resetPasswordBorder.setTitleFont(new Font("Arial Black", Font.BOLD, 20));
+
+        JLabel resetOTPLabel = new JLabel("OTP:");
+        JTextField verifyOTPField = new JTextField();
+        JLabel newPasswordLabel = new JLabel("New Password:");
+        JPasswordField newPasswordField = new JPasswordField();
+        JButton resetPasswordButton = new JButton("Reset Password");
+
+        resetPasswordForm.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(20, 20, 20, 20), resetPasswordBorder));
+        resetPasswordForm.add(OTPLabel);
+        resetPasswordForm.add(OTPField);
+        resetPasswordForm.add(newPasswordLabel);
+        resetPasswordForm.add(newPasswordField);
+        resetPasswordForm.add(resetPasswordButton);
+
     }
+
+    
     
     
     public static void main(String[] args) {
