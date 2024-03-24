@@ -12,6 +12,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import control.LoginControl;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -28,6 +30,35 @@ public class LoginView extends JFrame {
     Color panelColor = new Color(206, 215, 246);
     Color fontColor = new Color(8, 17, 54);
     Color placeholderColor = new Color(195, 195, 195);
+    
+    private JPanel main;
+    private JPanel loginForm;
+    private JPanel regForm;
+    private JPanel forgotForm;
+    private JLabel forgot;
+    private JLabel newPassLabel;
+    private JPanel resetPasswordForm;
+    
+    private JButton loginButton;
+    private JButton registerButton;
+    private JButton newRegBtn;
+    private JButton backLoginBtn;
+    private JButton sendOTPBtn;
+    private JButton resendOTPBtn;
+    private JButton cancelBtn;
+    private JButton verifyOTPBtn;
+    private JButton resetPassBtn;
+    private JButton recancelBtn;
+    
+    private JTextField loginMailField;
+    private JTextField regMailField;
+    private JTextField forgotMailField;
+    private JTextField OTPField;
+    
+    private JPasswordField loginPassField;
+    private JPasswordField regPassField;
+    private JPasswordField regPassConfField;
+    private JPasswordField newPassField;
     
     /**
      * Initializes the window for the application
@@ -47,10 +78,10 @@ public class LoginView extends JFrame {
     private void init(){
     	GridBagLayout gb = new GridBagLayout();
     	GridBagConstraints gbc = new GridBagConstraints();
-    	JPanel main = new JPanel(gb);
+    	main = new JPanel(gb);
     	
     	//Login Form
-    	JPanel loginForm = new JPanel(new GridLayout(4,2,25,25));
+    	loginForm = new JPanel(new GridLayout(4,2,25,25));
     	loginForm.setPreferredSize(new Dimension(550,350));
     	loginForm.setBackground(panelColor);
     	
@@ -93,7 +124,7 @@ public class LoginView extends JFrame {
         JLabel userLabel = new JLabel("Email: ");
         userLabel.setFont(new Font("Arial Black",1,17));
         userLabel.setForeground(fontColor);
-        JTextField loginMailField = new JTextField();
+        loginMailField = new JTextField();
         loginMailField.setFont(new Font("Arial",1,15));
         loginMailField.setForeground(fontColor);
         loginMailField.setBackground(bgColor);
@@ -101,18 +132,18 @@ public class LoginView extends JFrame {
         JLabel passLabel = new JLabel("Password: ");
         passLabel.setFont(new Font("Arial Black",1,17));
         passLabel.setForeground(fontColor);
-        JPasswordField loginPassField = new JPasswordField();
+        loginPassField = new JPasswordField();
         loginPassField.setFont(new Font("Arial",1,15));
         loginPassField.setForeground(fontColor);
         loginPassField.setBackground(bgColor);
         
-        JButton loginButton = new JButton("Login");
+        loginButton = new JButton("Login");
         loginButton.setFont(new Font("Arial Black",1,17));
         loginButton.setForeground(fontColor);
         loginButton.setBackground(bgColor);
         loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
-        JButton registerButton = new JButton("Register");
+        registerButton = new JButton("Register");
         registerButton.setFont(new Font("Arial Black",1,17));
         registerButton.setForeground(fontColor);
         registerButton.setBackground(bgColor);
@@ -120,7 +151,7 @@ public class LoginView extends JFrame {
         
 //        JPanel forgotPanel = new JPanel(new GridLayout(1,1,15,15));
 //        JPanel forgotContainer = new JPanel(new GridLayout());
-        JLabel forgot = new JLabel("<html><u>Forgot Password<u><html>", SwingConstants.CENTER);
+        forgot = new JLabel("<html><u>Forgot Password<u><html>", SwingConstants.CENTER);
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.PAGE_END;
 //        forgot.setBorder(new EmptyBorder(0,0,0,0));
@@ -159,15 +190,15 @@ public class LoginView extends JFrame {
         JLabel regUserLabel = new JLabel("Email: ");
         regUserLabel.setFont(new Font("Arial Black",1,17));
         regUserLabel.setForeground(fontColor);
-        JTextField regEmailField = new JTextField();
-        regEmailField.setFont(new Font("Arial",1,15));
-        regEmailField.setForeground(fontColor);
-        regEmailField.setBackground(bgColor);
+        regMailField = new JTextField();
+        regMailField.setFont(new Font("Arial",1,15));
+        regMailField.setForeground(fontColor);
+        regMailField.setBackground(bgColor);
         
         JLabel regPassLabel = new JLabel("Password: ");
         regPassLabel.setFont(new Font("Arial Black",1,17));
         regPassLabel.setForeground(fontColor);
-        JPasswordField regPassField = new JPasswordField();
+        regPassField = new JPasswordField();
         regPassField.setFont(new Font("Arial",1,15));
         regPassField.setForeground(fontColor);
         regPassField.setBackground(bgColor);
@@ -180,13 +211,13 @@ public class LoginView extends JFrame {
         regPassConfField.setForeground(fontColor);
         regPassConfField.setBackground(bgColor);
         
-        JButton newRegBtn = new JButton("Register");
+        newRegBtn = new JButton("Register");
         newRegBtn.setFont(new Font("Arial Black",1,17));
         newRegBtn.setForeground(fontColor);
         newRegBtn.setBackground(bgColor);
         newRegBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
-        JButton backLoginBtn = new JButton("Login");
+        backLoginBtn = new JButton("Login");
         backLoginBtn.setFont(new Font("Arial Black",1,17));
         backLoginBtn.setForeground(fontColor);
         backLoginBtn.setBackground(bgColor);
@@ -195,7 +226,7 @@ public class LoginView extends JFrame {
 
         regForm.setBorder(regBorder);
         regForm.add(regUserLabel);
-        regForm.add(regEmailField);
+        regForm.add(regMailField);
         regForm.add(regPassLabel);
         regForm.add(regPassField);
         regForm.add(regPassConfLabel);
@@ -204,7 +235,7 @@ public class LoginView extends JFrame {
         regForm.add(backLoginBtn);
 
         //Forgot password page
-        JPanel forgotForm = new JPanel(new GridLayout(3, 2, 30, 15));
+        forgotForm = new JPanel(new GridLayout(3, 2, 30, 15));
         forgotForm.setPreferredSize(new Dimension(600, 250));
         forgotForm.setBackground(panelColor);
 
@@ -218,114 +249,209 @@ public class LoginView extends JFrame {
         forgotEmailLabel.setFont(new Font("Arial Black",1,17));
         forgotEmailLabel.setForeground(fontColor);
         
-        JTextField forgotEmailField = new JTextField();
-        forgotEmailField.setFont(new Font("Arial",1,15));
-        forgotEmailField.setForeground(fontColor);
-        forgotEmailField.setBackground(bgColor);
+        forgotMailField = new JTextField();
+        forgotMailField.setFont(new Font("Arial",1,15));
+        forgotMailField.setForeground(fontColor);
+        forgotMailField.setBackground(bgColor);
         
         JLabel OTPLabel = new JLabel("OTP: ");
         OTPLabel.setFont(new Font("Arial Black",1,17));
         OTPLabel.setForeground(fontColor);
         
-        JTextField OTPField = new JTextField();
+        OTPField = new JTextField();
         OTPField.setFont(new Font("Arial",1,15));
         OTPField.setForeground(fontColor);
         OTPField.setBackground(bgColor);
         OTPField.setEnabled(false);
         
-        JButton resendOtpBtn = new JButton("Resend OTP");
-        resendOtpBtn.setFont(new Font("Arial Black",1,12));
-        resendOtpBtn.setForeground(fontColor);
-        resendOtpBtn.setBackground(bgColor);
-        resendOtpBtn.setEnabled(false);
-        resendOtpBtn.setToolTipText("You can resend OTP once every 30 seconds");
-        resendOtpBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        resendOTPBtn = new JButton("Resend OTP");
+        resendOTPBtn.setFont(new Font("Arial Black",1,12));
+        resendOTPBtn.setForeground(fontColor);
+        resendOTPBtn.setBackground(bgColor);
+        resendOTPBtn.setEnabled(false);
+        resendOTPBtn.setToolTipText("You can resend OTP once every 30 seconds");
+        resendOTPBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         
         JPanel OTPFieldGroup = new JPanel(new GridLayout(1, 2, 10, 0));
         
-        JButton sendOTPBtn = new JButton("Send OTP");
+        sendOTPBtn = new JButton("Send OTP");
         sendOTPBtn.setFont(new Font("Arial Black",1,17));
         sendOTPBtn.setForeground(fontColor);
         sendOTPBtn.setBackground(bgColor);
         sendOTPBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
-        JButton cancelBtn = new JButton("Cancel");
+        cancelBtn = new JButton("Cancel");
         cancelBtn.setFont(new Font("Arial Black",1,17));
         cancelBtn.setForeground(fontColor);
         cancelBtn.setBackground(bgColor);
         cancelBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         // After OTP sent components
-        JButton verifyOTPBtn = new JButton("Verify");
+        verifyOTPBtn = new JButton("Verify");
         verifyOTPBtn.setFont(new Font("Arial Black",1,17));
         verifyOTPBtn.setForeground(fontColor);
         verifyOTPBtn.setBackground(bgColor);
         verifyOTPBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
-//        JButton recancelBtn = new JButton("Cancel");
-//        recancelBtn.setFont(new Font("Arial Black",1,17));
-//        recancelBtn.setForeground(fontColor);
-//        recancelBtn.setBackground(bgColor);
-//        recancelBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        OTPFieldGroup.add(OTPField);
+        OTPFieldGroup.add(resendOTPBtn);
+
+        forgotForm.setBorder(forgotBorder);
+        forgotForm.add(forgotEmailLabel);
+        forgotForm.add(forgotMailField);
+        forgotForm.add(OTPLabel);
+        forgotForm.add(OTPFieldGroup);
+//        forgotForm.add(resendOtpBtn);
+        forgotForm.add(sendOTPBtn);
+//        forgotForm.add(verifyOTPBtn);
+        forgotForm.add(cancelBtn);
+        
+        // After OTP sent components
+        resetPasswordForm = new JPanel(new GridLayout(2,2,30,15));
+        resetPasswordForm.setPreferredSize(new Dimension(600, 250));
+        resetPasswordForm.setBackground(panelColor);
+
+        TitledBorder resetBorder = new TitledBorder(new EmptyBorder(60,25,25,25), "Reset Password");
+        resetBorder.setTitleJustification(TitledBorder.CENTER);
+        resetBorder.setTitlePosition(TitledBorder.TOP);
+        resetBorder.setTitleFont(new Font("Arial Black",1,20));
+        resetBorder.setTitleColor(fontColor);
+        
+        recancelBtn = new JButton("Cancel");
+        recancelBtn.setFont(new Font("Arial Black",1,17));
+        recancelBtn.setForeground(fontColor);
+        recancelBtn.setBackground(bgColor);
+        recancelBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         // After OTP verification components
-        JLabel newPassLabel = new JLabel("Set New Password: ");
+        newPassLabel = new JLabel("Set New Password: ");
         newPassLabel.setFont(new Font("Arial Black",1,17));
         newPassLabel.setForeground(fontColor);
         
-        JPasswordField newPassField = new JPasswordField();
+        newPassField = new JPasswordField();
         newPassField.setFont(new Font("Arial",1,15));
         newPassField.setForeground(fontColor);
         newPassField.setBackground(bgColor);
         
-        JButton resetPassBtn = new JButton("Reset Password");
+        resetPassBtn = new JButton("Reset Password");
         resetPassBtn.setFont(new Font("Arial Black",1,17));
         resetPassBtn.setForeground(fontColor);
         resetPassBtn.setBackground(bgColor);
         resetPassBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        OTPFieldGroup.add(OTPField);
-        OTPFieldGroup.add(resendOtpBtn);
-
-        forgotForm.setBorder(forgotBorder);
-        forgotForm.add(forgotEmailLabel);
-        forgotForm.add(forgotEmailField);
-        forgotForm.add(OTPLabel);
-        forgotForm.add(OTPFieldGroup);
-        forgotForm.add(sendOTPBtn);
-        forgotForm.add(cancelBtn);
         
-        // Reset Password Form
-        JPanel resetPasswordForm = new JPanel(new GridLayout(3, 2, 10, 10));
-        resetPasswordForm.setPreferredSize(new Dimension(500, 150));
-        resetPasswordForm.setBackground(new Color(206, 215, 246));
-
-        TitledBorder resetPasswordBorder = new TitledBorder("Reset Password");
-        resetPasswordBorder.setTitleJustification(TitledBorder.CENTER);
-        resetPasswordBorder.setTitleFont(new Font("Arial Black", Font.BOLD, 20));
-
-        JLabel resetOTPLabel = new JLabel("OTP:");
-        JTextField verifyOTPField = new JTextField();
-        JLabel newPasswordLabel = new JLabel("New Password:");
-        JPasswordField newPasswordField = new JPasswordField();
-        JButton resetPasswordButton = new JButton("Reset Password");
-
-        resetPasswordForm.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(20, 20, 20, 20), resetPasswordBorder));
-        resetPasswordForm.add(OTPLabel);
-        resetPasswordForm.add(OTPField);
-        resetPasswordForm.add(newPasswordLabel);
-        resetPasswordForm.add(newPasswordField);
-        resetPasswordForm.add(resetPasswordButton);
+        resetPasswordForm.add(newPassLabel);
+        resetPasswordForm.add(newPassField);
+        resetPasswordForm.add(resetPassBtn);
+        resetPasswordForm.add(recancelBtn);
 
     }
+    
+    public JPanel getMainPanel() {
+    	return main;
+    }
+    
+    public JPanel getLoginPanel() {
+    	return loginForm;
+    }
+    
+    public JPanel getRegPanel() {
+    	return regForm;
+    }
+    
+    public JPanel getForgotPanel() {
+    	return forgotForm;
+    }
+    
+    public JPanel getResetPasswordPanel() {
+    	return resetPasswordForm;
+    }
 
+    public JButton getLoginButton() {
+        return loginButton;
+    }
     
+    public JLabel getForgotLabel() {
+        return forgot;
+    }
     
+    public JLabel getNewPassLabel() {
+        return newPassLabel;
+    }
+
+    public JButton getRegisterButton() {
+        return registerButton;
+    }
+    
+    public JButton getNewRegisterButton() {
+        return newRegBtn;
+    }
+
+    public JButton getBackLoginButton() {
+        return backLoginBtn;
+    }
+
+    public JButton getSendOTPButton() {
+        return sendOTPBtn;
+    }
+    
+    public JButton getResendOTPButton() {
+        return resendOTPBtn;
+    }
+    
+    public JButton getVerifyOTPButton() {
+        return verifyOTPBtn;
+    }
+
+    public JButton getCancelForgotButton() {
+        return cancelBtn;
+    }
+
+    public JButton getResetPasswordButton() {
+        return resetPassBtn;
+    }
+    
+    public JButton getRecancelButton() {
+        return recancelBtn;
+    }
+
+    public JTextField getLoginMailField() {
+        return loginMailField;
+    }
+
+    public JPasswordField getLoginPassField() {
+        return loginPassField;
+    }
+
+    public JTextField getRegEmailField() {
+        return regMailField;
+    }
+    
+    public JPasswordField getRegPassField() {
+        return regPassField;
+    }
+
+    public JPasswordField getRegPassConfField() {
+        return regPassConfField;
+    }
+
+    public JTextField getForgotEmailField() {
+        return forgotMailField;
+    }
+
+    public JTextField getOTPField() {
+        return OTPField;
+    }
+
+    public JPasswordField getNewPasswordField() {
+        return newPassField;
+    }
     
     public static void main(String[] args) {
     	LoginView view = new LoginView();
         view.setVisible(true);
+        new LoginControl(view);
     }
 }
 
