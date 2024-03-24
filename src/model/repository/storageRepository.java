@@ -1,4 +1,4 @@
-package repository;
+package model.repository;
 
 public class storageRepository {
     

@@ -1,4 +1,4 @@
-package transferObjects;
+package model.transferObjects;
 
 public class userTO {
     public String email;

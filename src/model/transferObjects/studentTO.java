@@ -1,4 +1,4 @@
-package transferObjects;
+package model.transferObjects;
 
 public class studentTO {
     public int roll;
