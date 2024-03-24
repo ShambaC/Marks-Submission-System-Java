@@ -1,3 +1,5 @@
+package view;
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -12,17 +14,25 @@ import javax.swing.border.TitledBorder;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
 import java.io.IOException;
+
 import java.net.URL;
 
-public class View extends JFrame {
+/**
+ * This class is the UI for the login form seen upon application startup
+ */
+public class LoginView extends JFrame {
 	
-	Color bgColor = new Color(242, 245, 255);
+    Color bgColor = new Color(242, 245, 255);
     Color panelColor = new Color(206, 215, 246);
     Color fontColor = new Color(8, 17, 54);
     Color placeholderColor = new Color(195, 195, 195);
     
-    public View() {
+    /**
+     * Initializes the window for the application
+     */
+    public LoginView() {
     	setTitle("Admin Login");
         setSize(1000, 700);
         setLocationRelativeTo(null);
@@ -31,6 +41,9 @@ public class View extends JFrame {
         init();
     }
 
+    /**
+     * Initializes the UI components within the window
+     */
     private void init(){
     	GridBagLayout gb = new GridBagLayout();
     	GridBagConstraints gbc = new GridBagConstraints();
@@ -311,7 +324,7 @@ public class View extends JFrame {
     
     
     public static void main(String[] args) {
-    	View view = new View();
+    	LoginView view = new LoginView();
         view.setVisible(true);
     }
 }

@@ -1,3 +1,5 @@
+package control;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -5,11 +7,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class Control {
-    
-    private View view;
+import view.LoginView;
 
-    public Control(View view) {
+public class LoginControl {
+    
+    private LoginView view;
+
+    public LoginControl(LoginView view) {
         this.view = view;
         initComponents();
     }
