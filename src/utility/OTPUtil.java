@@ -1,4 +1,4 @@
-package control;
+package utility;
 import java.util.Random;
 
 // Utility class to manage an OTP
