@@ -1,4 +1,7 @@
 package control;
+import utility.OTPUtil;
+import utility.credUtil;
+import view.LoginView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +20,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 
-import view.LoginView;
 
 public class LoginControl {
     

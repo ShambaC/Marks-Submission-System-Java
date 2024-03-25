@@ -1,4 +1,4 @@
-package control;
+package utility;
 import java.io.File;
 import java.io.IOException;
 
@@ -25,23 +25,12 @@ public class EmailUtil {
 
     // Constructor loads data from the env
     public EmailUtil() {
-        File f = new File("C:/Users/DELL/Desktop/.env.example");
-
-        try {
-            // Read the env file
-            String content = new String(Files.readAllBytes(f.toPath()));
-            // Split its content by its lines
-            String lines[] = content.split("\\r?\\n");
-
-            // Split each key value using '=' and store the data
-            SMTPHostName = lines[0].split("=")[1];
-            SMTPport = lines[1].split("=")[1];
-            SMTPUserName = lines[2].split("=")[1];
-            SMTPpass = lines[3].split("=")[1];
-        }
-        catch(IOException err) {
-            err.printStackTrace();
-        }
+    	
+    	envUtil eu = new envUtil("C:/Users/DELL/Documents/GitHub/Marks-Submission-System-Java/src/env");
+    	SMTPHostName = eu.get("SMTP_HOST");
+        SMTPport = eu.get("SMTP_PORT");
+        SMTPUserName = eu.get("SMTP_USERNAME");
+        SMTPpass = eu.get("SMTP_PASSWORD");
     }
 
     /**

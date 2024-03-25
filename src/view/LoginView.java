@@ -1,5 +1,6 @@
 package view;
 
+import control.LoginControl;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -177,7 +178,7 @@ public class LoginView extends JFrame {
         
         
         //Registration Form
-        JPanel regForm = new JPanel(new GridLayout(4,2,25,25));
+        regForm = new JPanel(new GridLayout(4,2,25,25));
         regForm.setPreferredSize(new Dimension(500,300));
         regForm.setBackground(panelColor);
     	
@@ -206,7 +207,7 @@ public class LoginView extends JFrame {
         JLabel regPassConfLabel = new JLabel("Confirm Password: ");
         regPassConfLabel.setFont(new Font("Arial Black",1,17));
         regPassConfLabel.setForeground(fontColor);
-        JPasswordField regPassConfField = new JPasswordField();
+        regPassConfField = new JPasswordField();
         regPassConfField.setFont(new Font("Arial",1,15));
         regPassConfField.setForeground(fontColor);
         regPassConfField.setBackground(bgColor);
