@@ -3,13 +3,17 @@ package utility;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Utility class to perform SQL queries on mariaDB
@@ -17,9 +21,13 @@ import java.util.List;
 
 public class DButil {
     /**
+     * Static reference to the singleton variable
+     */
+    private static DButil DBUtilInstance = null;
+    /**
      * The connection to the Database
      */
-    private static Connection conn;
+    private Connection conn;
 
     /**
      * String to store the location of the schemas
@@ -35,7 +43,7 @@ public class DButil {
      * @param pathToSchema  Stores the path to the schema folder
      */
     public DButil(String DBaddress, String DBUser, String DBPassword, String pathToSchema) {
-        if(conn != null)    return;
+        if(conn != null) return;
 
         try {
             //Initialize the schema path
@@ -82,6 +90,14 @@ public class DButil {
         catch(ClassNotFoundException err) {
             err.printStackTrace();
         }
+    }
+
+    /**
+     * Returns the singleton instance of this class
+     * @return DBUtilInstance
+     */
+    public static  DButil getInstance() {
+        return DBUtilInstance;
     }
 
     /**
@@ -157,6 +173,25 @@ public class DButil {
             System.err.println(err.getErrorCode() + " " + err.getSQLState());
         }
         
+        return res;
+    }
+
+    /**
+     * Method to execute a query statement and get the result
+     * @param query Query to execute
+     * @return A ResultSet containing the result table
+     */
+    public ResultSet executeQueryStatement(String query) {
+        ResultSet res = null;
+
+        try {
+            Statement stmt = conn.createStatement();
+            res = stmt.executeQuery(query);
+        }
+        catch(SQLException err) {
+            System.err.println(err.getErrorCode() + " " + err.getSQLState());
+        }
+
         return res;
     }
 
