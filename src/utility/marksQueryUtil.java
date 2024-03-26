@@ -17,7 +17,7 @@ public class marksQueryUtil {
     }
 
     public int lowestMarkBySub(String sub) {
-        String query = "select min(ObtMarks) 'minMarks' from (select ObtMarks from marks where paperCode = '"+ sub + "');";
+        String query = "select min(ObtMarks) 'minMarks' from (select ObtMarks from marks where paperCode = '"+ sub + "') as tmp;";
 
         ResultSet res = dbUtil.executeQueryStatement(query);
 
@@ -34,7 +34,7 @@ public class marksQueryUtil {
     }
 
     public int highestMarkBySub(String sub) {
-        String query = "select max(ObtMarks) 'maxMarks' from (select ObtMarks from marks where paperCode = '"+ sub + "');";
+        String query = "select max(ObtMarks) 'maxMarks' from (select ObtMarks from marks where paperCode = '"+ sub + "') as tmp;";
 
         ResultSet res = dbUtil.executeQueryStatement(query);
 
@@ -50,12 +50,12 @@ public class marksQueryUtil {
         return maxMarks;
     }
 
-    public int avgMarkBySub(String sub) {
-        String query = "select avg(ObtMarks) 'avgMarks' from (select ObtMarks from marks where paperCode = '"+ sub + "');";
+    public float avgMarkBySub(String sub) {
+        String query = "select avg(ObtMarks) 'avgMarks' from (select ObtMarks from marks where paperCode = '"+ sub + "') as tmp;";
 
         ResultSet res = dbUtil.executeQueryStatement(query);
 
-        int avgMarks = 0;
+        float avgMarks = 0;
 
         try {
             avgMarks = res.getInt("agvMarks");
