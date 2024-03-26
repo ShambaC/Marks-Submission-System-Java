@@ -1,4 +1,13 @@
 package view;
+
+import model.repository.marksRepository;
+import model.repository.storageParams;
+import model.repository.storageRepository;
+import model.repository.userRepository;
+import model.transferObjects.studentTO;
+import model.transferObjects.userTO;
+import model.userdata.admin;
+import model.userdata.student;
 import model.userdata.user;
 
 import java.awt.Color;
@@ -19,29 +28,14 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import model.transferObjects.*;
-import model.userdata.*;
-import model.repository.*;
 
-public class MarksMgmt extends JFrame{
+
+public class MarksMgmt extends JFrame {
 
 	// initialize JList with model
 	// A list model to store all the employees
 	DefaultListModel<user> model = new DefaultListModel<user>();
 
-	userRepository userRepo = new userRepository(new storageRepository());
-	storageParams userParams = userRepo.retrieve();
-
-	for(userTO uTO : userParams.uTOList) {
-	    model.addElement(new admin(uTO.email));
-	}
-
-	marksRepository marksRepo = new marksRepository(new storageRepository());
-	storageParams marksParams = marksRepo.retrieve();
-
-	for(studentTO sTO : marksParams.sTOList) {
-	    model.addElement(new student(Integer.toString(sTO.roll), sTO.coll, sTO.cate));
-	}
 	
     
     Color bgColor = new Color(242, 245, 255);
@@ -50,11 +44,25 @@ public class MarksMgmt extends JFrame{
     Color placeholderColor = new Color(195, 195, 195);
    
 
-    MarksMgmt() { 
+    public MarksMgmt() { 
         setTitle("Marks Management System");
         setSize(1200, 700);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        userRepository userRepo = new userRepository(new storageRepository());
+        storageParams userParams = userRepo.retrieve();
+
+        for(userTO uTO : userParams.uTOList) {
+            model.addElement(new admin(uTO.email));
+        }
+
+        marksRepository marksRepo = new marksRepository(new storageRepository());
+        storageParams marksParams = marksRepo.retrieve();
+
+        for(studentTO sTO : marksParams.sTOList) {
+            model.addElement(new student(Integer.toString(sTO.roll), sTO.coll, sTO.cate));
+        }
 
         init();
     }

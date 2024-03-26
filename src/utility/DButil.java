@@ -13,6 +13,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import conf.config;
+
 /**
  * Utility class to perform SQL queries on mariaDB
  */
@@ -31,6 +33,10 @@ public class DButil {
      * String to store the location of the schemas
      */
     private String pathToSchema;
+
+    private DButil(Connection conn) {
+        this.conn = conn;
+    }
 
     /**
      * Initializes the connection to the database.
@@ -81,6 +87,8 @@ public class DButil {
             conn.close();
             // Open the connection to the required database
             conn = DriverManager.getConnection("jdbc:mariadb://"+ DBaddress + "/mss", DBUser, DBPassword);
+
+            DBUtilInstance = new DButil(conn);
         }
         catch(SQLException err) {
             System.err.println(err.getErrorCode() + " " + err.getSQLState());
