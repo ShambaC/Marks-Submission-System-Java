@@ -7,6 +7,10 @@ public class student extends user {
 
     public student(String roll, String coll, String cate) {
         super(roll.toString() + "-" + coll + "-" + cate);
+
+        this.roll = Integer.parseInt(roll);
+        this.coll = coll;
+        this.cate = cate;
     }
 
     @Override
