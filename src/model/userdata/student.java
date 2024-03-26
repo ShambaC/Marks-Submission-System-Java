@@ -1,5 +1,8 @@
 package model.userdata;
 
+/**
+ * Student user
+ */
 public class student extends user {
     private int roll;
     private String coll;

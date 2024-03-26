@@ -9,11 +9,15 @@ import model.repository.userRepository;
 
 import model.transferObjects.userTO;
 
-// Utility class to handle the user DB
+/**
+ * Utility class to handle the user DB
+ */
 public class credUtil {
     private Map<String, String> creds = new HashMap<String, String>();
 
-    // Constructor initializes the DB map from the file
+    /**
+     * Constructor initializes the DB map from the file
+     */
     public credUtil() {
         userRepository userRepo = new userRepository(new storageRepository());
         storageParams userParams = userRepo.retrieve();
@@ -44,6 +48,9 @@ public class credUtil {
         return obtainPass.equals(pass);
     }
 
+    /**
+     * Method to update the admin database
+     */
     private void saveCredsToDB() {
         for(String email : creds.keySet()) {
             String passHash = creds.get(email);

@@ -1,5 +1,8 @@
 package model.transferObjects;
 
+/**
+ * Transfer object for marks
+ */
 public class marksTO {
     public int roll;
     public String paperName;
