@@ -1,5 +1,8 @@
 package model.repository;
 
+/**
+ * Concrete implementation of base repository for user table
+ */
 public class userRepository extends baseRepository {
     /**
      * constructor to initialize storage repository of parent class
