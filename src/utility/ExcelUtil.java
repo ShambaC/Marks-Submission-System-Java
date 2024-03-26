@@ -2,96 +2,97 @@ package utility;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbookFactory;
 
 public class ExcelUtil {
-
-    // Database Connection Details
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/your_database_name";
-    private static final String DB_USER = "your_database_username";
-    private static final String DB_PASSWORD = "your_database_password";
+    
+    public static class ExcelRow {
+        public String course_title;
+        public String course_code;
+        public String TH_PR_AI;
+        public String half;
+        public String coll;
+        public String cate;
+        public int number;
+        public int full_marks;
+        public String marks_obtained;
+    }
 
     public static void main(String[] args) throws EncryptedDocumentException, IOException {
-        ExcelUtil ob = new ExcelUtil();
-        String userName = ob.readExcel("User_credential", 1, 0);
-        System.out.println(userName);
-        ob.writeExcel("User_credential", 1, 2, "PASS");
-
-        // Assuming you want to upload marks after login
-        ob.uploadMarksFromExcel("marks_sheet.xlsx");
-    }
-
-    public String readExcel(String sheetName, int rowNum, int colNum) throws EncryptedDocumentException, IOException {
-        String data = "";
-        try {
-            FileInputStream fis = new FileInputStream("//file path");
-            Workbook wb = WorkbookFactory.create(fis);
-            Sheet s = wb.getSheet(sheetName);
-            Row r = s.getRow(rowNum);
-            Cell c = r.getCell(colNum);
-            data = c.getStringCellValue();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return data;
-    }
-
-    public void writeExcel(String sheetName, int rowNum, int colNum, String data) throws EncryptedDocumentException, IOException {
-        try {
-            FileInputStream fis = new FileInputStream("//file path");
-            Workbook wb = WorkbookFactory.create(fis);
-            Sheet s = wb.getSheet(sheetName);
-            Row r = s.getRow(rowNum);
-            Cell c = r.createCell(colNum);
-            c.setCellValue(data);
-            FileOutputStream fos = new FileOutputStream("//file path");
-            wb.write(fos);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void uploadMarksFromExcel(String filePath) throws IOException {
-        try {
-            FileInputStream fis = new FileInputStream(filePath);
-            Workbook workbook = WorkbookFactory.create(fis);
-            Sheet sheet = workbook.getSheetAt(0); // Assuming marks are in the first sheet
-
-            // Database Connection
-            try (Connection connection = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASSWORD)) {
-                // Assuming you have a table named 'marks' with columns 'student_name' and 'marks'
-                String sql = "INSERT INTO marks (student_name, marks) VALUES (?, ?)";
-                try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                    for (Row row : sheet) {
-                        // Assuming first cell contains student name and second cell contains marks
-                        String studentName = row.getCell(0).getStringCellValue();
-                        double marks = row.getCell(1).getNumericCellValue();
-                        statement.setString(1, studentName);
-                        statement.setDouble(2, marks);
-                        statement.addBatch();
-                    }
-                    // Execute batch insert
-                    statement.executeBatch();
-                    System.out.println("Marks uploaded successfully.");
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+        List<ExcelRow> rows = readExcel("Sheet1");
+        System.out.println("Course/Paper title" + "\t " + "Course/Paper code" + "\t " + "TH/PR/AI" + "\t" +
+                "Half" + "\t " + "Coll" + "\t " + "Cate" + "\t " +
+                "Number" + "\t " + "Full_marks" + "\t" + "Marks_obtained\n\n");
+        for (ExcelRow row : rows) {
+            if (row.number != 0 || row.full_marks != 0 || !"0".equals(row.marks_obtained) && row.marks_obtained != null && !row.marks_obtained.isEmpty()) {
+                System.out.println(row.course_title + "   \t " + row.course_code + "              \t " + row.TH_PR_AI + "   \t" +
+                                   row.half + "   \t " + row.coll + "   \t " + row.cate + "  \t  " +
+                                   row.number + "  \t" + row.full_marks + "  \t  " + row.marks_obtained);
+            } else {
+                break;
             }
-        } catch (FileNotFoundException | EncryptedDocumentException e) {
-            e.printStackTrace();
         }
     }
-}
+    public static List<ExcelRow> readExcel(String sheetName) throws EncryptedDocumentException, IOException {
+        List<ExcelRow> dataList = new ArrayList<>();
+        try {
+            FileInputStream fis = new FileInputStream("C:\\Users\\shrey\\OneDrive\\Documents\\GitHub\\BTECH 5TH SEMESTER 2023 CSCL501 70.xlsx");
+            XSSFWorkbook wb = new XSSFWorkbook(fis);   
+            XSSFSheet s = wb.getSheet(sheetName);
+            int startRow = 9; 
+            int numRows = s.getPhysicalNumberOfRows();
+            for (int i = startRow; i < numRows; i++) {
+                Row r = s.getRow(i);
+                ExcelRow excelRow = new ExcelRow();
+                excelRow.course_title = getStringValue(r.getCell(1));
+                excelRow.course_code = getStringValue(r.getCell(2)); 
+                excelRow.TH_PR_AI = getStringValue(r.getCell(3)); 
+                excelRow.half = getStringValue(r.getCell(4)); 
+                excelRow.coll = getStringValue(r.getCell(5)); 
+                excelRow.cate = getStringValue(r.getCell(6)); 
+                excelRow.number = getNumericValue(r.getCell(7)); 
+                excelRow.full_marks = getNumericValue(r.getCell(8)); 
+                excelRow.marks_obtained = getStringValue(r.getCell(9)); 
+                dataList.add(excelRow);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return dataList;
+    }
 
+    private static String getStringValue(Cell cell) {
+        if (cell != null) {
+            return cell.getStringCellValue();
+        }
+        return null;
+    }
+
+    private static int getNumericValue(Cell cell) {
+        if (cell != null) {
+            if (cell.getCellType() == CellType.NUMERIC) {
+                return (int) cell.getNumericCellValue();
+            } else if (cell.getCellType() == CellType.STRING) {
+                try {
+                    return Integer.parseInt(cell.getStringCellValue());
+                } catch (NumberFormatException e) {
+                    System.err.println("Error parsing numeric value: " + e.getMessage());
+                }
+            }
+        }
+        return 0; 
+    }
+
+
+}
