@@ -1,12 +1,5 @@
 package utility;
 
-
-
-import java.io.File;
-import java.io.IOException;
-
-import java.nio.file.Files;
-
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
