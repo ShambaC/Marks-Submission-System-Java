@@ -1,7 +1,5 @@
 package utility;
 import java.io.File;
-import config;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,23 +9,25 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import conf.config;
+
+import model.repository.storageParams;
+import model.repository.storageRepository;
+import model.repository.userRepository;
+
+import model.transferObjects.userTO;
+
 // Utility class to handle the user DB
 public class credUtil {
     private Map<String, String> creds = new HashMap<String, String>();
 
     // Constructor initializes the DB map from the file
     public credUtil() {
-        File f = new File("C:/Users/DELL/Desktop/Creds.db");
+        userRepository userRepo = new userRepository(new storageRepository());
+        storageParams userParams = userRepo.retrieve();
 
-        if(f.exists() && !f.isDirectory()) {
-            try {
-                ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
-                creds = (HashMap) in.readObject();
-                in.close();
-            }
-            catch(IOException | ClassNotFoundException err) {
-                err.printStackTrace();
-            }
+        for(userTO uTO : userParams.uTOList) {
+            creds.put(uTO.email, uTO.passHash);
         }
     }
 
@@ -52,17 +52,15 @@ public class credUtil {
         return obtainPass.equals(pass);
     }
 
-    private void saveCredsToFile() {
-        try {
-            FileOutputStream fout = new FileOutputStream(config.credentialsFileLocation);
-            ObjectOutputStream out = new ObjectOutputStream(fout);
+    private void saveCredsToDB() {
+        for(String email : creds.keySet()) {
+            String passHash = creds.get(email);
 
-            out.writeObject(creds);
-            out.flush();
-            out.close();
-        }
-        catch(IOException err) {
-            err.printStackTrace();
+            userRepository userRepo = new userRepository(new storageRepository());
+            storageParams userParams = new storageParams("user");
+            userTO uTO = new userTO(email, passHash);
+            userParams.uTO = uTO;
+            userRepo.store(userParams);
         }
     }
 
@@ -73,7 +71,7 @@ public class credUtil {
      */
     public void addEntry(String mail, String pass) {
         creds.put(mail, pass);
-        saveCredsToFile();
+        saveCredsToDB();
     }
 
     /**
@@ -83,6 +81,6 @@ public class credUtil {
      */
     public void resetPassWord(String mail, String pass) {
         creds.replace(mail, pass);
-        saveCredsToFile();
+        saveCredsToDB();
     }
 }

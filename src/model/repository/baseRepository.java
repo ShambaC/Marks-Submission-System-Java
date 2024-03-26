@@ -23,7 +23,7 @@ public abstract class baseRepository {
      */
     public abstract void store(storageParams params);
     /**
-     * method to retrieve a particular data from db
+     * method to retrieve all data from db
      * @return params
      */
     public abstract storageParams retrieve();
