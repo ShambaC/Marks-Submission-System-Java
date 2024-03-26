@@ -36,7 +36,6 @@ public class marksQueryUtil {
 
     public int highestMarkBySub(String sub) {
         String query = "select max(ObtMarks) 'maxMarks' from (select ObtMarks from marks where paperCode = '"+ sub + "') as tmp;";
-        System.out.println(query);
 
         ResultSet res = dbUtil.executeQueryStatement(query);
 
@@ -62,7 +61,7 @@ public class marksQueryUtil {
 
         try {
             if(res.next())
-                avgMarks = res.getInt("agvMarks");
+                avgMarks = res.getInt("avgMarks");
         }
         catch(SQLException err) {
             System.err.println(err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage());
