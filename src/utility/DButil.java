@@ -13,8 +13,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import conf.config;
-
 /**
  * Utility class to perform SQL queries on mariaDB
  */
