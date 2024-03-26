@@ -61,6 +61,9 @@ public class LoginView extends JFrame {
     private JPasswordField regPassConfField;
     private JPasswordField newPassField;
     
+    //create a LoginControl class object
+    LoginControl control = new LoginControl(this);
+    
     /**
      * Initializes the window for the application
      */
@@ -114,12 +117,14 @@ public class LoginView extends JFrame {
         loginButton.setForeground(fontColor);
         loginButton.setBackground(bgColor);
         loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        loginButton.addActionListener(control.loginButtonAL);
         
         registerButton = new JButton("Register");
         registerButton.setFont(new Font("Arial Black",1,17));
         registerButton.setForeground(fontColor);
         registerButton.setBackground(bgColor);
         registerButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        registerButton.addActionListener(control.registerButtonAL);
         
         forgot = new JLabel("<html><u>Forgot Password<u><html>", SwingConstants.CENTER);
         gbc.gridwidth = 2;
@@ -128,7 +133,7 @@ public class LoginView extends JFrame {
         forgot.setForeground(Color.BLUE);
         forgot.setFont(new Font("Arial",1,15));
         forgot.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
+        forgot.addMouseListener(control.forgotML);
         
         loginForm.setBorder(border);
         loginForm.add(userLabel);
@@ -184,13 +189,14 @@ public class LoginView extends JFrame {
         newRegBtn.setForeground(fontColor);
         newRegBtn.setBackground(bgColor);
         newRegBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        newRegBtn.addActionListener(control.newRegBtnAL);
         
         backLoginBtn = new JButton("Login");
         backLoginBtn.setFont(new Font("Arial Black",1,17));
         backLoginBtn.setForeground(fontColor);
         backLoginBtn.setBackground(bgColor);
         backLoginBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-       
+        backLoginBtn.addActionListener(control.backLoginBtnAL);
 
         regForm.setBorder(regBorder);
         regForm.add(regUserLabel);
@@ -239,7 +245,7 @@ public class LoginView extends JFrame {
         resendOTPBtn.setEnabled(false);
         resendOTPBtn.setToolTipText("You can resend OTP once every 30 seconds");
         resendOTPBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
+        resendOTPBtn.addActionListener(control.resendOTPBtnAL);
         
         JPanel OTPFieldGroup = new JPanel(new GridLayout(1, 2, 10, 0));
         
@@ -248,12 +254,14 @@ public class LoginView extends JFrame {
         sendOTPBtn.setForeground(fontColor);
         sendOTPBtn.setBackground(bgColor);
         sendOTPBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        sendOTPBtn.addActionListener(control.sendOTPBtnAL);
         
         cancelBtn = new JButton("Cancel");
         cancelBtn.setFont(new Font("Arial Black",1,17));
         cancelBtn.setForeground(fontColor);
         cancelBtn.setBackground(bgColor);
         cancelBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        cancelBtn.addActionListener(control.cancelBtnAL);
         
         // After OTP sent components
         verifyOTPBtn = new JButton("Verify");
@@ -261,6 +269,7 @@ public class LoginView extends JFrame {
         verifyOTPBtn.setForeground(fontColor);
         verifyOTPBtn.setBackground(bgColor);
         verifyOTPBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        verifyOTPBtn.addActionListener(control.verifyOTPBtnAL);
         
         OTPFieldGroup.add(OTPField);
         OTPFieldGroup.add(resendOTPBtn);
@@ -291,6 +300,7 @@ public class LoginView extends JFrame {
         recancelBtn.setForeground(fontColor);
         recancelBtn.setBackground(bgColor);
         recancelBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        recancelBtn.addActionListener(control.recancelBtnAL);
         
         // After OTP verification components
         newPassLabel = new JLabel("Set New Password: ");
@@ -307,6 +317,7 @@ public class LoginView extends JFrame {
         resetPassBtn.setForeground(fontColor);
         resetPassBtn.setBackground(bgColor);
         resetPassBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        resetPassBtn.addActionListener(control.resetPassBtnAL);
 
         
         resetPasswordForm.add(newPassLabel);
@@ -419,7 +430,7 @@ public class LoginView extends JFrame {
     public static void main(String[] args) {
     	LoginView view = new LoginView();
         view.setVisible(true);
-        new LoginControl(view);
+//        new LoginControl(view);
     }
 }
 
