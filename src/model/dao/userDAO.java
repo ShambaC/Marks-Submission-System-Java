@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.transferObjects.marksTO;
 import model.transferObjects.userTO;
 import utility.DButil;
 
@@ -35,7 +34,7 @@ public class userDAO {
         List<userTO> uToList = new ArrayList<userTO>();
 
         DButil dbUtil = DButil.getInstance();
-        ResultSet res = dbUtil.executeQueryStatement("select * from marks;");
+        ResultSet res = dbUtil.executeQueryStatement("select * from usertable;");
 
         try {
             while (res.next()) {
@@ -51,5 +50,31 @@ public class userDAO {
         }
 
         return uToList;
+    }
+
+    /**
+     * Method to get user data of a specific user
+     * @param id email of the user to get data for
+     * @return user Transfer object for that particular user
+     */
+    public userTO retrieveOne(String id) {
+        userTO uTO = null;
+
+        DButil dbUtil = DButil.getInstance();
+        ResultSet res = dbUtil.executeQueryStatement("select * from usertable where email='" + id + "';");
+
+        try {
+            while (res.next()) {
+                String email = res.getString("email");
+                String passHash = res.getString("passHash");
+
+                uTO = new userTO(email, passHash);
+            }
+        }
+        catch(SQLException err) {
+            System.err.println(err.getErrorCode() + " " + err.getSQLState());
+        }
+
+        return uTO;
     }
 }

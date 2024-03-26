@@ -84,6 +84,38 @@ public class marksDAO {
     }
 
     /**
+     * Method to return a list of all rows in marks table for a particular student
+     * @param rollNum The roll number of the student
+     * @return A list of marks transfer objects
+     */
+    public List<marksTO> retrieveOne(String rollNum) {
+        List<marksTO> mToList = new ArrayList<marksTO>();
+
+        DButil dbUtil = DButil.getInstance();
+        ResultSet res = dbUtil.executeQueryStatement("select * from marks where roll=" + rollNum + ";");
+
+        try {
+            while (res.next()) {
+                int roll = res.getInt("roll");
+                String paperName = res.getString("paperName");
+                String paperCode = res.getString("paperCode");
+                String paperType = res.getString("paperType");
+                String half = res.getString("half");
+                int FullMarks = res.getInt("FullMarks");
+                int ObtMarks = res.getInt("ObtMarks");
+
+                marksTO mTO = new marksTO(roll, paperName, paperCode, paperType, half, FullMarks, ObtMarks);
+                mToList.add(mTO);
+            }
+        }
+        catch(SQLException err) {
+            System.err.println(err.getErrorCode() + " " + err.getSQLState());
+        }
+
+        return mToList;
+    }
+
+    /**
      * Method to return a list of all rows in students table
      * @return A list of Student transfer objects
      */
@@ -91,7 +123,7 @@ public class marksDAO {
         List<studentTO> sToList = new ArrayList<studentTO>();
 
         DButil dbUtil = DButil.getInstance();
-        ResultSet res = dbUtil.executeQueryStatement("select * from marks;");
+        ResultSet res = dbUtil.executeQueryStatement("select * from studenttable;");
 
         try {
             while (res.next()) {
