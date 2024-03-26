@@ -65,4 +65,14 @@ public class storageRepository {
 
         return params;
     }
+
+    /**
+     * Method to replace value of a column specified by filter
+     * @param filter used to filter rows
+     * @param value column value
+     */
+    public void replaceField(String filter, String value) {
+        userDAO uD = new userDAO();
+        uD.replaceField(filter, value);
+    }
 }

@@ -64,6 +64,16 @@ public class credUtil {
     }
 
     /**
+     * Method to reset password
+     * @param mail
+     * @param pass
+     */
+    private void replaceInDB(String mail, String pass) {
+        userRepository userRepo = new userRepository(new storageRepository());
+        userRepo.replaceField(mail, pass);
+    }
+
+    /**
      * Adds a new user to the DB
      * @param mail  Mail to add to the DB
      * @param pass  Password for the user to be associated with the mail
@@ -80,6 +90,7 @@ public class credUtil {
      */
     public void resetPassWord(String mail, String pass) {
         creds.replace(mail, pass);
-        saveCredsToDB();
+        replaceInDB(mail, pass);
+        
     }
 }
