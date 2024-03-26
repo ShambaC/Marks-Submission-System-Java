@@ -26,4 +26,13 @@ public class userRepository extends baseRepository {
     public storageParams retrieveOne(String id) {
         return sr.retrieveOne("user", id);
     }
+
+    /**
+     * Method to replace value of a column specified by filter
+     * @param filter used to filter rows
+     * @param value column value
+     */
+    public void replaceField(String filter, String value) {
+        sr.replaceField(filter, value);
+    }
 }

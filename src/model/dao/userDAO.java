@@ -77,4 +77,17 @@ public class userDAO {
 
         return uTO;
     }
+
+    /**
+     * method to replace password hash with new value
+     * @param email email to replace password for
+     * @param passHash new hash
+     */
+    public void replaceField(String email, String passHash) {
+        String query = "update usertable set passHash = '" + email + "' where email = '" + passHash + "';";
+
+        DButil dbUtil = DButil.getInstance();
+        int res = dbUtil.executeUpdateStatement(query);
+        System.out.println(res + " rows effected");
+    }
 }
