@@ -1,13 +1,22 @@
 package utility;
 import java.util.Random;
 
-// Utility class to manage an OTP
+/**
+ * Utility class to manage an OTP
+ */
 public class OTPUtil {
+    /**
+     * String that contains the OTP
+     */
     private String OTP;
-    // Get the email utility class
+    /**
+     * Get the email utility class
+     */
     private EmailUtil mailUtil = new EmailUtil();
 
-    // Constructor to initialize the OTP
+    /**
+     * Constructor to initialize the OTP
+     */
     public OTPUtil() {
         Random random = new Random();
         // Get a random number from 0 to 9999

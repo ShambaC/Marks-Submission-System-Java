@@ -1,5 +1,8 @@
 package model.transferObjects;
 
+/**
+ * Transfer object for students
+ */
 public class studentTO {
     public int roll;
     public String coll;

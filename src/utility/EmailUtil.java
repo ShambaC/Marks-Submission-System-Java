@@ -1,8 +1,4 @@
 package utility;
-import java.io.File;
-import java.io.IOException;
-
-import java.nio.file.Files;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -12,11 +8,15 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import conf.config;
+
 import java.util.Date;
 import java.util.Properties;
 
-// utility class to send mail using the SMTP protocol
-// Sensitive details are in env file
+/**
+ * utility class to send mail using the SMTP protocol
+ * <p>Sensitive details are in env file
+ */
 public class EmailUtil {
     private String SMTPHostName;
     private String SMTPport;
@@ -26,7 +26,7 @@ public class EmailUtil {
     // Constructor loads data from the env
     public EmailUtil() {
     	
-    	envUtil eu = new envUtil("C:/Users/DELL/Documents/GitHub/Marks-Submission-System-Java/src/env");
+    	envUtil eu = new envUtil(config.envFileLocation);
     	SMTPHostName = eu.get("SMTP_HOST");
         SMTPport = eu.get("SMTP_PORT");
         SMTPUserName = eu.get("SMTP_USERNAME");
