@@ -5,6 +5,8 @@ package model.transferObjects;
  */
 public class marksTO {
     public int roll;
+    public String coll;
+    public String cate;
     public String paperName;
     public String paperCode;
     public String paperType;
@@ -14,6 +16,8 @@ public class marksTO {
 
     public marksTO(
         int roll,
+        String coll,
+        String cate,
         String paperName,
         String paperCode,
         String paperType,
@@ -22,6 +26,8 @@ public class marksTO {
         int ObtMarks)
         {
             this.roll = roll;
+            this.coll = coll;
+            this.cate = cate;
             this.paperCode = paperCode;
             this.paperName = paperName;
             this.paperType = paperType;

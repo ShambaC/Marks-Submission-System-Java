@@ -38,6 +38,8 @@ public class marksDAO {
         String query = "insert into marks values(";
 
         query += Integer.toString(mTO.roll) + ", ";
+        query += "'" + mTO.coll + "', ";
+        query += "'" + mTO.cate + "', ";
         query += "'" + mTO.paperName + "', ";
         query += "'" + mTO.paperCode + "', ";
         query += "'" + mTO.paperType + "', ";
@@ -65,6 +67,8 @@ public class marksDAO {
         try {
             while (res.next()) {
                 int roll = res.getInt("roll");
+                String coll = res.getString("coll");
+                String cate = res.getString("cate");
                 String paperName = res.getString("paperName");
                 String paperCode = res.getString("paperCode");
                 String paperType = res.getString("paperType");
@@ -72,7 +76,7 @@ public class marksDAO {
                 int FullMarks = res.getInt("FullMarks");
                 int ObtMarks = res.getInt("ObtMarks");
 
-                marksTO mTO = new marksTO(roll, paperName, paperCode, paperType, half, FullMarks, ObtMarks);
+                marksTO mTO = new marksTO(roll, coll, cate, paperName, paperCode, paperType, half, FullMarks, ObtMarks);
                 mToList.add(mTO);
             }
         }
@@ -97,6 +101,8 @@ public class marksDAO {
         try {
             while (res.next()) {
                 int roll = res.getInt("roll");
+                String coll = res.getString("coll");
+                String cate = res.getString("cate");
                 String paperName = res.getString("paperName");
                 String paperCode = res.getString("paperCode");
                 String paperType = res.getString("paperType");
@@ -104,7 +110,7 @@ public class marksDAO {
                 int FullMarks = res.getInt("FullMarks");
                 int ObtMarks = res.getInt("ObtMarks");
 
-                marksTO mTO = new marksTO(roll, paperName, paperCode, paperType, half, FullMarks, ObtMarks);
+                marksTO mTO = new marksTO(roll, coll, cate, paperName, paperCode, paperType, half, FullMarks, ObtMarks);
                 mToList.add(mTO);
             }
         }
