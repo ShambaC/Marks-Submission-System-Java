@@ -21,7 +21,7 @@ replay_pid*
 .vscode
 
 # App config file
-src/config.java
+src/conf/config.java
 
 # Environment files
 src/.env
