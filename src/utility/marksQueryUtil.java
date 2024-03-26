@@ -72,8 +72,24 @@ public class marksQueryUtil {
     }
 
     public float passPercentBySub(String sub) {
-        return 1.0f;
+        float passPerc = 0;
+        try {
+            int studentCount = 0;
+            String stuCountQuery = "select count(*) 'rows' from studenttable;";
+            ResultSet res = dbUtil.executeQueryStatement(stuCountQuery);
+            if(res.next())
+                studentCount = res.getInt("rows");
+            int passNum = 0;
+            String passNumQuery = "select count(*) 'rows' from marks where paperCode = '" + sub + "' and ObtMarks > (30*FullMarks/100);";
+            res = dbUtil.executeQueryStatement(passNumQuery);
+            if(res.next())
+                passNum = res.getInt("rows");
 
-        //TODO
+            passPerc = passNum / studentCount * 100;
+        }
+        catch(SQLException err) {
+            System.err.println(err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage());
+        }
+        return passPerc;
     }
 }
