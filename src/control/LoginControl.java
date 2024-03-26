@@ -2,11 +2,13 @@ package control;
 import utility.OTPUtil;
 import utility.credUtil;
 import view.LoginView;
+import view.MarksMgmt;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -25,11 +27,24 @@ public class LoginControl {
     
     private LoginView view;
     private JPanel main;
+//    LoginView view = new LoginView();
     
     private credUtil CredsObj = new credUtil();
     // Get the OTP util
     private OTPUtil OTPobj = new OTPUtil();
-
+    
+    public ActionListener loginButtonAL;
+    public ActionListener registerButtonAL;
+    public MouseListener forgotML;
+    public ActionListener newRegBtnAL;
+    public ActionListener backLoginBtnAL;
+    public ActionListener sendOTPBtnAL;
+    public ActionListener resendOTPBtnAL;
+    public ActionListener verifyOTPBtnAL;
+    public ActionListener cancelBtnAL;
+    public ActionListener recancelBtnAL;
+    public ActionListener resetPassBtnAL;
+    
     public LoginControl(LoginView view) {
         this.view = view;
         this.main = view.getMainPanel();
@@ -56,7 +71,7 @@ public class LoginControl {
     }
 
     private void initComponents() {
-//    	main = view.getMainPanel();
+    	main = view.getMainPanel();
     	JPanel loginForm = view.getLoginPanel();
     	JPanel regForm = view.getRegPanel();
     	JPanel forgotForm = view.getForgotPanel();
@@ -84,19 +99,49 @@ public class LoginControl {
         
         JLabel forgot = view.getForgotLabel();
         JLabel newPassLabel = view.getNewPassLabel();
+    	
+        loginButtonAL = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				// Get the mail and password from the form fields
+	            String mail = loginMailField.getText();
+	            String pass = String.valueOf(loginPassField.getPassword());
 
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String email = loginMailField.getText();
-                String password = new String(loginPassField.getPassword());
-                // Perform login logic here
-                // For example, you can check credentials, validate, etc.
-                JOptionPane.showMessageDialog(view, "Perform login logic for: \nEmail: " + email + "\nPassword: " + password);
-            }
-        });
-
-        registerButton.addActionListener(new ActionListener() {
+	            // If the inputs are valid
+	            if(!mail.isBlank() && !pass.isBlank()) {
+	                // Check the database for the mail to see if it exists
+	                if(CredsObj.isMailExists(mail)) {
+	                    try {
+	                        // hash the password with SHA256
+	                        String hashedPassword = getSHA256(pass);
+	                        // Check if the email provided matches the corresponding password from the database
+	                        if(CredsObj.isMailPassMatch(mail, hashedPassword)) {
+	                            // If it matches, launch the Employee Management UI
+	                            MarksMgmt mm = new MarksMgmt();
+	                            mm.setVisible(true);
+//	                            mm.setVisible(false);
+	                        }
+	                        else {
+	                            JOptionPane.showMessageDialog(main, "Mail Password do not match", "Error", JOptionPane.ERROR_MESSAGE);
+	                        }
+	                    }
+	                    catch(NoSuchAlgorithmException | UnsupportedEncodingException err) {
+	                        err.printStackTrace();
+	                    }
+	                }
+	                else {
+	                    JOptionPane.showMessageDialog(main, "Email does not exists in our database", "Error", JOptionPane.ERROR_MESSAGE);
+	                }
+	            }
+	            else {
+	                JOptionPane.showMessageDialog(main, "Please fill up all the fields", "Error", JOptionPane.ERROR_MESSAGE);
+	            }
+			}
+        
+        };
+    	
+        registerButtonAL = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Reset the login form fields
@@ -111,9 +156,9 @@ public class LoginControl {
 //                revalidate();
 //                repaint();
             }
-        });
+        };
 
-        backLoginBtn.addActionListener(new ActionListener() {
+        backLoginBtnAL = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Remove the registration form
@@ -124,9 +169,9 @@ public class LoginControl {
 //                revalidate();
 //                repaint();
             }
-        });
+        };
         
-        forgot.addMouseListener(new MouseAdapter() {
+        forgotML = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 // show the password reset screen
@@ -135,7 +180,7 @@ public class LoginControl {
 //                revalidate();
 //                repaint();
             }
-        });
+        };
         
         Timer timer = new Timer(30000, new ActionListener() {
             @Override
@@ -149,7 +194,7 @@ public class LoginControl {
         // The timer is only required every time the resend button is disabled
         timer.setRepeats(false);
 
-        sendOTPBtn.addActionListener(new ActionListener() {
+        sendOTPBtnAL = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Get the mail from the form field
@@ -185,9 +230,9 @@ public class LoginControl {
                     JOptionPane.showMessageDialog(main, "Email does not exists in our database", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
-        });
+        };
 
-        cancelBtn.addActionListener(new ActionListener() {
+        cancelBtnAL = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Reset the OTP text field and disable it
@@ -205,9 +250,9 @@ public class LoginControl {
 //                revalidate();
 //                repaint();
             }        
-           });
+         };
         
-        resendOTPBtn.addActionListener(new ActionListener() {
+        resendOTPBtnAL = new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		String mail = forgotEmailField.getText();
                 
@@ -241,9 +286,9 @@ public class LoginControl {
                     JOptionPane.showMessageDialog(main, "Email does not exists in our database", "Error", JOptionPane.ERROR_MESSAGE);
                 }
         	}
-        });
+        };
         
-        verifyOTPBtn.addActionListener(new ActionListener() {
+        verifyOTPBtnAL = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Get the user given OTP from the form field
@@ -280,9 +325,9 @@ public class LoginControl {
                 }
                 
             }
-        });
+        };
         
-        newRegBtn.addActionListener(new ActionListener() {
+        newRegBtnAL = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Get the registration form data
@@ -328,9 +373,9 @@ public class LoginControl {
                 }
 
             }
-        });
+        };
 
-        resetPassBtn.addActionListener(new ActionListener() {
+        resetPassBtnAL = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Get the mail and the new password from the form
@@ -359,9 +404,9 @@ public class LoginControl {
                 }
                 
             }
-        });
+        };
         
-        recancelBtn.addActionListener(new ActionListener() {
+        recancelBtnAL = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Reset fields
@@ -392,7 +437,7 @@ public class LoginControl {
 //                revalidate();
 //                repaint();
             }
-        });
+        };
         
     }
 }

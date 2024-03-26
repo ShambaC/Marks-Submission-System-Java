@@ -50,19 +50,19 @@ public class MarksMgmt extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        userRepository userRepo = new userRepository(new storageRepository());
-        storageParams userParams = userRepo.retrieve();
-
-        for(userTO uTO : userParams.uTOList) {
-            model.addElement(new admin(uTO.email));
-        }
-
-        marksRepository marksRepo = new marksRepository(new storageRepository());
-        storageParams marksParams = marksRepo.retrieve();
-
-        for(studentTO sTO : marksParams.sTOList) {
-            model.addElement(new student(Integer.toString(sTO.roll), sTO.coll, sTO.cate));
-        }
+//        userRepository userRepo = new userRepository(new storageRepository());
+//        storageParams userParams = userRepo.retrieve();
+//
+//        for(userTO uTO : userParams.uTOList) {
+//            model.addElement(new admin(uTO.email));
+//        }
+//
+//        marksRepository marksRepo = new marksRepository(new storageRepository());
+//        storageParams marksParams = marksRepo.retrieve();
+//
+//        for(studentTO sTO : marksParams.sTOList) {
+//            model.addElement(new student(Integer.toString(sTO.roll), sTO.coll, sTO.cate));
+//        }
 
         init();
     }
