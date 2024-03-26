@@ -31,3 +31,6 @@ docs
 
 # Test file
 src/test.java
+
+# Generated pdfs
+pdfGen
