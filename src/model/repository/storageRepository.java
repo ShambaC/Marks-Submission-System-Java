@@ -35,6 +35,7 @@ public class storageRepository {
         if(type.equalsIgnoreCase("marks")) {
             marksDAO mD = new marksDAO();            
             params.mTOList = mD.retrieve();
+            params.sTOList = mD.retrieveStudent();
         }
         else if(type.equalsIgnoreCase("user")) {
             userDAO uD = new userDAO();
