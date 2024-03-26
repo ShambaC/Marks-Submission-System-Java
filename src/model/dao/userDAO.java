@@ -46,7 +46,7 @@ public class userDAO {
             }
         }
         catch(SQLException err) {
-            System.err.println(err.getErrorCode() + " " + err.getSQLState());
+            System.err.println(err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage());
         }
 
         return uToList;
@@ -72,7 +72,7 @@ public class userDAO {
             }
         }
         catch(SQLException err) {
-            System.err.println(err.getErrorCode() + " " + err.getSQLState());
+            System.err.println(err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage());
         }
 
         return uTO;

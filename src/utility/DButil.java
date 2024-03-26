@@ -91,7 +91,7 @@ public class DButil {
             DBUtilInstance = new DButil(conn);
         }
         catch(SQLException err) {
-            System.err.println(err.getErrorCode() + " " + err.getSQLState());
+            System.err.println(err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage());
         }
         catch(ClassNotFoundException err) {
             err.printStackTrace();
@@ -176,7 +176,7 @@ public class DButil {
             res = stmt.executeUpdate(query);
         }
         catch(SQLException err) {
-            System.err.println(err.getErrorCode() + " " + err.getSQLState());
+            System.err.println(err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage());
         }
         
         return res;
@@ -195,7 +195,7 @@ public class DButil {
             res = stmt.executeQuery(query);
         }
         catch(SQLException err) {
-            System.err.println(err.getErrorCode() + " " + err.getSQLState());
+            System.err.println("execute query statement error" + err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage() + " " + err.getMessage());
         }
 
         return res;
@@ -246,7 +246,7 @@ public class DButil {
             System.out.println("DB initialized");
         }
         catch(SQLException err) {
-            System.err.println(err.getErrorCode() + " " + err.getSQLState());
+            System.err.println(err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage());
         }
         catch(IOException err) {
             err.printStackTrace();

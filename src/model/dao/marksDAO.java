@@ -81,7 +81,7 @@ public class marksDAO {
             }
         }
         catch(SQLException err) {
-            System.err.println(err.getErrorCode() + " " + err.getSQLState());
+            System.err.println(err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage());
         }
 
         return mToList;
@@ -115,7 +115,7 @@ public class marksDAO {
             }
         }
         catch(SQLException err) {
-            System.err.println(err.getErrorCode() + " " + err.getSQLState());
+            System.err.println(err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage());
         }
 
         return mToList;
@@ -142,7 +142,7 @@ public class marksDAO {
             }
         }
         catch(SQLException err) {
-            System.err.println(err.getErrorCode() + " " + err.getSQLState());
+            System.err.println(err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage());
         }
 
         return sToList;

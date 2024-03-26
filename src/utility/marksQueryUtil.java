@@ -24,10 +24,11 @@ public class marksQueryUtil {
         int minMarks = 0;
 
         try {
-            minMarks = res.getInt("minMarks");
+            if(res.next())
+                minMarks = res.getInt("minMarks");
         }
         catch(SQLException err) {
-            System.err.println(err.getErrorCode() + " " + err.getSQLState());
+            System.err.println("lowest mark by sub error: " + err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage());
         }
 
         return minMarks;
@@ -35,16 +36,18 @@ public class marksQueryUtil {
 
     public int highestMarkBySub(String sub) {
         String query = "select max(ObtMarks) 'maxMarks' from (select ObtMarks from marks where paperCode = '"+ sub + "') as tmp;";
+        System.out.println(query);
 
         ResultSet res = dbUtil.executeQueryStatement(query);
 
         int maxMarks = 0;
 
         try {
-            maxMarks = res.getInt("maxMarks");
+            if(res.next())
+                maxMarks = res.getInt("maxMarks");
         }
         catch(SQLException err) {
-            System.err.println(err.getErrorCode() + " " + err.getSQLState());
+            System.err.println("highest mark by sub error: " + err.getErrorCode() + " " + err.getMessage());
         }
 
         return maxMarks;
@@ -58,10 +61,11 @@ public class marksQueryUtil {
         float avgMarks = 0;
 
         try {
-            avgMarks = res.getInt("agvMarks");
+            if(res.next())
+                avgMarks = res.getInt("agvMarks");
         }
         catch(SQLException err) {
-            System.err.println(err.getErrorCode() + " " + err.getSQLState());
+            System.err.println(err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage());
         }
 
         return avgMarks;
