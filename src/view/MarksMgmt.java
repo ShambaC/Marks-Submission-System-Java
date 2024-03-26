@@ -25,30 +25,24 @@ import model.repository.*;
 
 public class MarksMgmt extends JFrame{
 
+	// initialize JList with model
 	// A list model to store all the employees
 	DefaultListModel<user> model = new DefaultListModel<user>();
 
-//	userRepository userRepo = new userRepository(new storageRepository());
-//	storageParams userParams = userRepo.retrieve();
-//
-//	for(userTO uTO : userParams.uTOList) {
-//	    admin adm = new admin(uTO.email);
-//	    model.addElement(adm);
-//	}
-//
-//	marksRepository marksRepo = new MarksRepository(new storageRepository());
-//	storageParams marksParams = marksRepo.retrieve();
-//
-//	for(studentTO sTO : marksParams.sTOList) {
-//	    student stu = new student(Integer.toString(sTO.roll), sTO.coll, sTO.cate);
-//	    model.addElement(stu);
-//	}
+	userRepository userRepo = new userRepository(new storageRepository());
+	storageParams userParams = userRepo.retrieve();
 
-	// initialize JList with model
+	for(userTO uTO : userParams.uTOList) {
+	    model.addElement(new admin(uTO.email));
+	}
 
-    
-    // Stores the currently selected employee from the list
-    user selectedEmployee = null;
+	marksRepository marksRepo = new marksRepository(new storageRepository());
+	storageParams marksParams = marksRepo.retrieve();
+
+	for(studentTO sTO : marksParams.sTOList) {
+	    model.addElement(new student(Integer.toString(sTO.roll), sTO.coll, sTO.cate));
+	}
+	
     
     Color bgColor = new Color(242, 245, 255);
     Color panelColor = new Color(206, 215, 246);
@@ -56,7 +50,7 @@ public class MarksMgmt extends JFrame{
     Color placeholderColor = new Color(195, 195, 195);
    
 
-    MarksMgmt() {
+    MarksMgmt() { 
         setTitle("Marks Management System");
         setSize(1200, 700);
         setLocationRelativeTo(null);
