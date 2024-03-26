@@ -87,35 +87,6 @@ public class LoginView extends JFrame {
     	loginForm.setBackground(panelColor);
     	
     	
-//    	ImageIcon image = null;
-//    	BufferedImage bufferedImage = null;
-//    	try {
-//    	    URL url = new URL("https://crushlogo.com/public/uploads/thumbnail/university-of-calcutta-logo-11684849442zuxwzxmtaj.png");
-//    	    bufferedImage = ImageIO.read(url);
-//    	} catch (IOException e1) {
-//    	    e1.printStackTrace();
-//    	}
-//    	 try {
-//    		 URL imageUrl = new URL("https://crushlogo.com/public/uploads/thumbnail/university-of-calcutta-logo-11684849442zuxwzxmtaj.png");
-//    		 BufferedImage originalImage = ImageIO.read(imageUrl);
-//             int newWidth = 200; // New width for the image
-//             int newHeight = (int) ((double) originalImage.getHeight() * newWidth / originalImage.getWidth());
-//             Image resizedImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-//	         JLabel imageLabel = new JLabel("resizedImage");
-//			// Add the image at the top center with column span 2
-//	         gbc.gridx = 0; // Start at the first column
-//	         gbc.gridy = 0; // First row
-//	         gbc.gridwidth = 2; // Column span of 2
-//	         gbc.anchor = GridBagConstraints.PAGE_START; // Align to the top
-//	         loginForm.add(imageLabel, gbc);
-//    	 }
-//	     catch (IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-    	 
-    	
-    	
         TitledBorder border = new TitledBorder(new EmptyBorder(60,25,25,25), "ADMIN LOG-IN");
         border.setTitleJustification(TitledBorder.CENTER);
         border.setTitlePosition(TitledBorder.TOP);
@@ -150,19 +121,15 @@ public class LoginView extends JFrame {
         registerButton.setBackground(bgColor);
         registerButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
-//        JPanel forgotPanel = new JPanel(new GridLayout(1,1,15,15));
-//        JPanel forgotContainer = new JPanel(new GridLayout());
         forgot = new JLabel("<html><u>Forgot Password<u><html>", SwingConstants.CENTER);
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.PAGE_END;
-//        forgot.setBorder(new EmptyBorder(0,0,0,0));
+
         forgot.setForeground(Color.BLUE);
         forgot.setFont(new Font("Arial",1,15));
         forgot.setCursor(new Cursor(Cursor.HAND_CURSOR));
-//        forgot.setVerticalAlignment(SwingConstants.BOTTOM);
-//        forgotPanel.add(forgot);
         
-//        loginForm.add(imgPanel);
+        
         loginForm.setBorder(border);
         loginForm.add(userLabel);
         loginForm.add(loginMailField);
