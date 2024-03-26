@@ -7,6 +7,10 @@ public class user {
         this.displayName = displayName;
     }
 
+    public boolean isAdmin() {
+        return false;
+    }
+
     @Override
     public String toString() {
         return displayName;

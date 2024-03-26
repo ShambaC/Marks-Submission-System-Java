@@ -9,6 +9,11 @@ public class student extends user {
         super(roll.toString() + "-" + coll + "-" + cate);
     }
 
+    @Override
+    public boolean isAdmin() {
+        return false;
+    }
+
     public int getRoll() {
         return roll;
     }
