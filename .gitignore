@@ -34,3 +34,6 @@ src/test.java
 
 # Generated pdfs
 pdfGen
+
+# test excel files
+ExcelFiles
