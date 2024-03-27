@@ -1,8 +1,7 @@
 package view;
 
-import control.LoginControl;
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
+import utility.OTPUtil;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -10,17 +9,17 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import control.LoginControl;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import java.io.IOException;
 
-import java.net.URL;
 
 /**
  * This class is the UI for the login form seen upon application startup
@@ -60,9 +59,6 @@ public class LoginView extends JFrame {
     private JPasswordField regPassField;
     private JPasswordField regPassConfField;
     private JPasswordField newPassField;
-    
-    //create a LoginControl class object
-    LoginControl control = new LoginControl(this);
     
     /**
      * Initializes the window for the application
@@ -117,14 +113,12 @@ public class LoginView extends JFrame {
         loginButton.setForeground(fontColor);
         loginButton.setBackground(bgColor);
         loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        loginButton.addActionListener(control.loginButtonAL);
         
         registerButton = new JButton("Register");
         registerButton.setFont(new Font("Arial Black",1,17));
         registerButton.setForeground(fontColor);
         registerButton.setBackground(bgColor);
         registerButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        registerButton.addActionListener(control.registerButtonAL);
         
         forgot = new JLabel("<html><u>Forgot Password<u><html>", SwingConstants.CENTER);
         gbc.gridwidth = 2;
@@ -133,7 +127,6 @@ public class LoginView extends JFrame {
         forgot.setForeground(Color.BLUE);
         forgot.setFont(new Font("Arial",1,15));
         forgot.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        forgot.addMouseListener(control.forgotML);
         
         loginForm.setBorder(border);
         loginForm.add(userLabel);
@@ -189,14 +182,12 @@ public class LoginView extends JFrame {
         newRegBtn.setForeground(fontColor);
         newRegBtn.setBackground(bgColor);
         newRegBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        newRegBtn.addActionListener(control.newRegBtnAL);
         
         backLoginBtn = new JButton("Login");
         backLoginBtn.setFont(new Font("Arial Black",1,17));
         backLoginBtn.setForeground(fontColor);
         backLoginBtn.setBackground(bgColor);
         backLoginBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        backLoginBtn.addActionListener(control.backLoginBtnAL);
 
         regForm.setBorder(regBorder);
         regForm.add(regUserLabel);
@@ -245,7 +236,6 @@ public class LoginView extends JFrame {
         resendOTPBtn.setEnabled(false);
         resendOTPBtn.setToolTipText("You can resend OTP once every 30 seconds");
         resendOTPBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        resendOTPBtn.addActionListener(control.resendOTPBtnAL);
         
         JPanel OTPFieldGroup = new JPanel(new GridLayout(1, 2, 10, 0));
         
@@ -254,14 +244,12 @@ public class LoginView extends JFrame {
         sendOTPBtn.setForeground(fontColor);
         sendOTPBtn.setBackground(bgColor);
         sendOTPBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        sendOTPBtn.addActionListener(control.sendOTPBtnAL);
         
         cancelBtn = new JButton("Cancel");
         cancelBtn.setFont(new Font("Arial Black",1,17));
         cancelBtn.setForeground(fontColor);
         cancelBtn.setBackground(bgColor);
         cancelBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        cancelBtn.addActionListener(control.cancelBtnAL);
         
         // After OTP sent components
         verifyOTPBtn = new JButton("Verify");
@@ -269,7 +257,6 @@ public class LoginView extends JFrame {
         verifyOTPBtn.setForeground(fontColor);
         verifyOTPBtn.setBackground(bgColor);
         verifyOTPBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        verifyOTPBtn.addActionListener(control.verifyOTPBtnAL);
         
         OTPFieldGroup.add(OTPField);
         OTPFieldGroup.add(resendOTPBtn);
@@ -300,7 +287,6 @@ public class LoginView extends JFrame {
         recancelBtn.setForeground(fontColor);
         recancelBtn.setBackground(bgColor);
         recancelBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        recancelBtn.addActionListener(control.recancelBtnAL);
         
         // After OTP verification components
         newPassLabel = new JLabel("Set New Password: ");
@@ -317,7 +303,6 @@ public class LoginView extends JFrame {
         resetPassBtn.setForeground(fontColor);
         resetPassBtn.setBackground(bgColor);
         resetPassBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        resetPassBtn.addActionListener(control.resetPassBtnAL);
 
         
         resetPasswordForm.add(newPassLabel);
@@ -325,6 +310,35 @@ public class LoginView extends JFrame {
         resetPasswordForm.add(resetPassBtn);
         resetPasswordForm.add(recancelBtn);
 
+        Timer timer = new Timer(30000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Enable the resend OTP button every 30 second
+                resendOTPBtn.setEnabled(true);
+            }
+        });
+        
+        // Do not loop the timer
+        // The timer is only required every time the resend button is disabled
+        timer.setRepeats(false);
+
+        OTPUtil OTPobj = new OTPUtil();
+
+        LoginControl lCon = new LoginControl();
+
+        // Add action listeners from control
+        loginButton.addActionListener(lCon.loginButtonALFactory(loginMailField, loginPassField, main));
+        registerButton.addActionListener(lCon.registerButtonALFactory(loginMailField, loginPassField, regForm, loginForm, main));
+        backLoginBtn.addActionListener(lCon.backLoginBtnALFactory(regForm, loginForm, main));
+        forgot.addMouseListener(lCon.forgotMLFactory(loginForm, forgotForm, main));
+        sendOTPBtn.addActionListener(lCon.sendOTPBtnALFactory(OTPobj, forgotMailField, OTPField, main, forgotForm, sendOTPBtn, cancelBtn, verifyOTPBtn, recancelBtn, timer));
+        cancelBtn.addActionListener(lCon.cancelBtnALFactory(main, OTPField, resendOTPBtn, forgotMailField, forgotForm, loginForm));
+        resendOTPBtn.addActionListener(lCon.resendOTPBtnALFactory(OTPobj, main, forgotMailField, OTPField, forgotForm, sendOTPBtn, cancelBtn, verifyOTPBtn, recancelBtn, timer));
+        verifyOTPBtn.addActionListener(lCon.verifyOTPBtnALFactory(OTPobj, OTPField, resendOTPBtn, verifyOTPBtn, recancelBtn, forgotForm, newPassLabel, newPassField, resetPassBtn, main, timer));
+        newRegBtn.addActionListener(lCon.newRegBtnALFactory(main, regMailField, regPassField, regPassConfField));
+        resetPassBtn.addActionListener(lCon.resetPassBtnALFactory(forgotMailField, newPassField, main, recancelBtn));
+        recancelBtn.addActionListener(lCon.recancelBtnALFactory(forgotMailField, OTPField, resendOTPBtn, newPassField, main, forgotForm, newPassLabel, verifyOTPBtn, resetPassBtn, recancelBtn, sendOTPBtn, cancelBtn, timer, loginForm));
+        
     }
     
     public JPanel getMainPanel() {

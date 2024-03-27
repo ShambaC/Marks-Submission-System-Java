@@ -9,8 +9,8 @@ public class App {
         DButil dbUtil = new DButil(config.DBaddress, config.DBUser, config.DBPassword, config.schemaLocation);
         dbUtil.dbInit();
 
-        //  LoginView view = new LoginView();
-        //  view.setVisible(true);
+         LoginView view = new LoginView();
+         view.setVisible(true);
 
     //    MarksMgmt mm = new MarksMgmt();
     //    mm.setVisible(true);
