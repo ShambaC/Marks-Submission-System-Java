@@ -17,16 +17,13 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.table.JTableHeader;
+
+import control.MarksMgmtControl;
 
 
 
@@ -50,19 +47,19 @@ public class MarksMgmt extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-//        userRepository userRepo = new userRepository(new storageRepository());
-//        storageParams userParams = userRepo.retrieve();
-//
-//        for(userTO uTO : userParams.uTOList) {
-//            model.addElement(new admin(uTO.email));
-//        }
-//
-//        marksRepository marksRepo = new marksRepository(new storageRepository());
-//        storageParams marksParams = marksRepo.retrieve();
-//
-//        for(studentTO sTO : marksParams.sTOList) {
-//            model.addElement(new student(Integer.toString(sTO.roll), sTO.coll, sTO.cate));
-//        }
+       userRepository userRepo = new userRepository(new storageRepository());
+       storageParams userParams = userRepo.retrieve();
+
+       for(userTO uTO : userParams.uTOList) {
+           model.addElement(new admin(uTO.email));
+       }
+
+       marksRepository marksRepo = new marksRepository(new storageRepository());
+       storageParams marksParams = marksRepo.retrieve();
+
+       for(studentTO sTO : marksParams.sTOList) {
+           model.addElement(new student(Integer.toString(sTO.roll), sTO.coll, sTO.cate));
+       }
 
         init();
     }
@@ -95,7 +92,7 @@ public class MarksMgmt extends JFrame {
         JPanel uploadGroup = new JPanel(new GridLayout(0,2,50,15));
         uploadGroup.setBackground(panelColor);
         
-        JLabel uploadLabel = new JLabel("Upload CSV File: ");
+        JLabel uploadLabel = new JLabel("Upload Excel File: ");
         uploadLabel.setFont(new Font("Arial Black",1,17));
         uploadLabel.setForeground(fontColor);
         
@@ -119,22 +116,32 @@ public class MarksMgmt extends JFrame {
         JPanel detailsGroup = new JPanel(new GridLayout(0, 1));
         detailsGroup.setBackground(panelColor);
 
+        JLabel warningLabel = new JLabel("Select an user to view details");
+        warningLabel.setFont(new Font("Arial Black",1,17));
+
         JLabel adminMail = new JLabel("Admin Email ID: ");
         adminMail.setFont(new Font("Arial Black",1,17));
+        adminMail.setVisible(false);
         
         JLabel sidLabel = new JLabel("Student ID: ");
         sidLabel.setFont(new Font("Arial Black",1,17));
-        
-        JLabel nameLabel = new JLabel("Name: ");
-        nameLabel.setFont(new Font("Arial Black",1,17));
+        sidLabel.setVisible(false);
         
         JLabel marksLabel = new JLabel("Marks: ");
         marksLabel.setFont(new Font("Arial Black",1,17));
+        marksLabel.setVisible(false);
 
+        JTable marksTable = new JTable();
+        JTableHeader marksHeader = marksTable.getTableHeader();
+        marksHeader.setVisible(false);
+        marksTable.setVisible(false);
+
+        detailsGroup.add(warningLabel);
         detailsGroup.add(adminMail);
         detailsGroup.add(sidLabel);
-        detailsGroup.add(nameLabel);
         detailsGroup.add(marksLabel);
+        detailsGroup.add(marksHeader);
+        detailsGroup.add(marksTable);
         detailsTab.add(detailsGroup);
         
         
@@ -228,7 +235,7 @@ public class MarksMgmt extends JFrame {
         gbc.weightx = 1;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.insets = new Insets(0, 0, 0, 0);
-        JList studentList = new JList(model);
+        JList<user> studentList = new JList<user>(model);
         JScrollPane studentScroll = new JScrollPane(studentList);
         studentScroll.setBackground(bgColor);
         studentScroll.setFont(new Font("Arial Black",1,13));
@@ -240,6 +247,12 @@ public class MarksMgmt extends JFrame {
         mainPanel.add(studentScroll);
 
         add(mainPanel);
+
+        MarksMgmtControl mmCon = new MarksMgmtControl();
+
+        uploadBtn.addActionListener(mmCon.uploadBtnALFactory(mainPanel, model));
+        studentList.addListSelectionListener(mmCon.studentListLSLFactory(studentList, detailsGroup, warningLabel, adminMail, sidLabel, marksLabel, marksTable, marksHeader));
+
     }
 
 	

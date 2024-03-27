@@ -21,6 +21,10 @@ public class user {
         return false;
     }
 
+    public int getRoll() {
+        return 1;
+    }
+
     @Override
     public String toString() {
         return displayName;
