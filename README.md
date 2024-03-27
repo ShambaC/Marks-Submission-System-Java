@@ -1,22 +1,16 @@
-## Getting Started
+# Marks Submission System
+### A simple system to maintain a database of marks in a institution
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+This was made for an assignment.
 
-## Folder Structure
+## How to run ?
+### Edit the config
+There is a config.java.example file in `src/conf`. Edit that according to the instructions inside it.
+### Edit the env
+Edit the `.env.example` file in `src` with your SMTP details.
 
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
-
-TODO
-Another temp change
-change
+You can use Gmail SMTP or Brevo or any other.
+### Run
+Run the main method in `App.java`
+## Release
+A release is also included with this.
