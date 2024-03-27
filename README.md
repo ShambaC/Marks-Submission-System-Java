@@ -11,6 +11,6 @@ Edit the `.env.example` file in `src` with your SMTP details.
 
 You can use Gmail SMTP or Brevo or any other.
 ### Run
-Run the main method in `App.java`
+Run the main method in `App.java` after running a mariadb server
 ## Release
 A release is also included with this.
