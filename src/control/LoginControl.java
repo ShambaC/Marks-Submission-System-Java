@@ -19,6 +19,7 @@ import javax.swing.Timer;
 
 import utility.OTPUtil;
 import utility.credUtil;
+import view.LoginView;
 import view.MarksMgmt;
 
 public class LoginControl {
@@ -48,8 +49,8 @@ public class LoginControl {
         return hexStr.toString();
     }
 
-    public loginButtonAL loginButtonALFactory(JTextField loginMailField, JPasswordField loginPassField, JPanel main) {
-        return new loginButtonAL(loginMailField, loginPassField, main);
+    public loginButtonAL loginButtonALFactory(JTextField loginMailField, JPasswordField loginPassField, JPanel main, LoginView lv) {
+        return new loginButtonAL(loginMailField, loginPassField, main, lv);
     }
     public registerButtonAL registerButtonALFactory(JTextField loginMailField, JPasswordField loginPassField, JPanel regForm, JPanel loginForm, JPanel main) {
         return new registerButtonAL(loginMailField, loginPassField, regForm, loginForm, main);
@@ -66,8 +67,8 @@ public class LoginControl {
     public cancelBtnAL cancelBtnALFactory(JPanel main, JTextField OTPField, JButton resendOTPBtn, JTextField forgotEmailField, JPanel forgotForm, JPanel loginForm) {
         return new cancelBtnAL(main, OTPField, resendOTPBtn, forgotEmailField, forgotForm, loginForm);
     }
-    public resendOTPBtnAL resendOTPBtnALFactory(OTPUtil OTPobj, JPanel main, JTextField forgotEmailField, JTextField OTPField, JPanel forgotForm, JButton sendOTPBtn, JButton cancelBtn, JButton verifyOTPBtn, JButton recancelBtn, Timer timer) {
-        return new resendOTPBtnAL(OTPobj, main, forgotEmailField, OTPField, forgotForm, sendOTPBtn, cancelBtn, verifyOTPBtn, recancelBtn, timer);
+    public resendOTPBtnAL resendOTPBtnALFactory(OTPUtil OTPobj, JPanel main, JTextField forgotEmailField, JTextField OTPField, JPanel forgotForm, JButton sendOTPBtn, JButton cancelBtn, JButton verifyOTPBtn, JButton recancelBtn, JButton resendOTPBtn, Timer timer) {
+        return new resendOTPBtnAL(OTPobj, main, forgotEmailField, OTPField, forgotForm, sendOTPBtn, cancelBtn, verifyOTPBtn, recancelBtn, resendOTPBtn, timer);
     }
     public verifyOTPBtnAL verifyOTPBtnALFactory(OTPUtil OTPobj, JTextField OTPField, JButton resendOTPBtn, JButton verifyOTPBtn, JButton recancelBtn, JPanel forgotForm, JLabel newPassLabel, JPasswordField newPassField, JButton resetPassBtn, JPanel main, Timer timer) {
         return new verifyOTPBtnAL(OTPobj, OTPField, resendOTPBtn, verifyOTPBtn, recancelBtn, forgotForm, newPassLabel, newPassField, resetPassBtn, main, timer);
@@ -88,11 +89,13 @@ class loginButtonAL implements ActionListener {
     JTextField loginMailField;
     JPasswordField loginPassField;
     JPanel main;
+    LoginView lv;
 
-    public loginButtonAL(JTextField loginMailField, JPasswordField loginPassField, JPanel main) {
+    public loginButtonAL(JTextField loginMailField, JPasswordField loginPassField, JPanel main, LoginView lv) {
         this.loginMailField = loginMailField;
         this.loginPassField = loginPassField;
         this.main = main;
+        this.lv = lv;
     }
 
     private credUtil CredsObj = new credUtil();
@@ -115,7 +118,7 @@ class loginButtonAL implements ActionListener {
                         // If it matches, launch the Employee Management UI
                         MarksMgmt mm = new MarksMgmt();
                         mm.setVisible(true);
-//	                            mm.setVisible(false);
+                        lv.setVisible(false);
                     }
                     else {
                         JOptionPane.showMessageDialog(main, "Mail Password do not match", "Error", JOptionPane.ERROR_MESSAGE);
@@ -324,10 +327,11 @@ class resendOTPBtnAL implements ActionListener {
     JButton cancelBtn;
     JButton verifyOTPBtn;
     JButton recancelBtn;
+    JButton resendOTPBtn;
 
     Timer timer;
 
-    public resendOTPBtnAL(OTPUtil OTPobj, JPanel main, JTextField forgotEmailField, JTextField OTPField, JPanel forgotForm, JButton sendOTPBtn, JButton cancelBtn, JButton verifyOTPBtn, JButton recancelBtn, Timer timer) {
+    public resendOTPBtnAL(OTPUtil OTPobj, JPanel main, JTextField forgotEmailField, JTextField OTPField, JPanel forgotForm, JButton sendOTPBtn, JButton cancelBtn, JButton verifyOTPBtn, JButton recancelBtn, JButton resendOTPBtn, Timer timer) {
         this.OTPobj = OTPobj;
         this.main = main;
         this.forgotEmailField = forgotEmailField;
@@ -337,6 +341,7 @@ class resendOTPBtnAL implements ActionListener {
         this.cancelBtn = cancelBtn;
         this.verifyOTPBtn = verifyOTPBtn;
         this.recancelBtn = recancelBtn;
+        this.resendOTPBtn = resendOTPBtn;
 
         this.timer = timer;
     }
@@ -351,13 +356,15 @@ class resendOTPBtnAL implements ActionListener {
             // This is done so that when the password reset part comes up, user cannot change the email to change password for a different user
             forgotEmailField.setEnabled(false);
             // Use the OTP utility class to send the OTP to the user via their mail
-            OTPobj.sendOTP(mail, false);
+            OTPobj.sendOTP(mail, true);
 
             // Show confirmation dialog
             JOptionPane.showMessageDialog(main, "Mail sent", "Info", JOptionPane.INFORMATION_MESSAGE);
 
             // Enable the OTP input field
             OTPField.setEnabled(true);
+            // disable resend button
+            resendOTPBtn.setEnabled(false);
             // Start the timer to resend OTP
             timer.start();
 

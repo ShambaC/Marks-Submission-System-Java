@@ -211,21 +211,42 @@ public class MarksMgmt extends JFrame {
         TitledBorder dataBorder = new TitledBorder(new EmptyBorder(30,10,10,10));
         pdfTab.setBorder(dataBorder);
         
-        JPanel dataGroup = new JPanel(new GridLayout(0, 2, 50, 15));
+        JPanel dataGroup = new JPanel(new GridLayout(0, 1, 50, 15));
         dataGroup.setBackground(panelColor);
         
+        JList<String> pdfSubList = new JList<>(subListModel);
+        pdfSubList.setSelectedIndex(0);
+
         JLabel pdfLabel = new JLabel("Generate PDF: ");
         pdfLabel.setFont(new Font("Arial Black",1,17));
         pdfLabel.setForeground(fontColor);
         
-        JButton pdfButton = new JButton("PDF");
+        JButton pdfButton = new JButton("Select Location and Generate");
         pdfButton.setFont(new Font("Arial Black",1,17));
         pdfButton.setForeground(fontColor);
         pdfButton.setBackground(bgColor);
         pdfButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
+        JLabel pdfEmailLabel = new JLabel("Enter email address: ");
+        pdfEmailLabel.setFont(new Font("Arial Black",1,17));
+        pdfEmailLabel.setForeground(fontColor);
+
+        JTextField pdfEmailField = new JTextField();
+        pdfEmailField.setFont(new Font("Arial Black",1,17));
+        pdfEmailField.setForeground(fontColor);
+
+        JButton sendPdfButton = new JButton("Send PDF");
+        sendPdfButton.setFont(new Font("Arial Black",1,17));
+        sendPdfButton.setForeground(fontColor);
+        sendPdfButton.setBackground(bgColor);
+        sendPdfButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        dataGroup.add(pdfSubList);
         dataGroup.add(pdfLabel);
         dataGroup.add(pdfButton);
+        dataGroup.add(pdfEmailLabel);
+        dataGroup.add(pdfEmailField);
+        dataGroup.add(sendPdfButton);
         pdfTab.add(dataGroup);
         
         TitledBorder tabsBorder = new TitledBorder(new EmptyBorder(10,10,10,10));
@@ -274,11 +295,12 @@ public class MarksMgmt extends JFrame {
         minBtn.addActionListener(mmCon.minBtnALFactory(mainPanel, querySubList));
         avgBtn.addActionListener(mmCon.avgBtnALFactory(mainPanel, querySubList));
         passBtn.addActionListener(mmCon.passBtnALFactory(mainPanel, querySubList));
+        pdfButton.addActionListener(mmCon.pdfButtonALFactory(mainPanel, pdfSubList));
+        sendPdfButton.addActionListener(mmCon.sendPdfButtonALFactory(mainPanel, pdfSubList, pdfEmailField));
     }
 
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		MarksMgmt mm = new MarksMgmt();
 		mm.setVisible(true);
 	}

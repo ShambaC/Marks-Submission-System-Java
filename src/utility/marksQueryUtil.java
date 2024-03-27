@@ -84,7 +84,8 @@ public class marksQueryUtil {
             if(res.next())
                 passNum = res.getInt("rows");
 
-            passPerc = passNum / studentCount * 100;
+            passPerc = (float) passNum / (float) studentCount * 100;
+            System.out.println(passPerc);
         }
         catch(SQLException err) {
             System.err.println(err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage());

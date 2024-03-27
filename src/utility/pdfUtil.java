@@ -24,10 +24,9 @@ import com.itextpdf.layout.borders.SolidBorder;
 
 public class pdfUtil {
 
-    public void generatePDF(String sub) {
+    public void generatePDF(String sub, String type, String fileNamePath) {
         try {
-            String filename = "./pdfGen/" + sub + "-Report.pdf";
-            Document document = new Document(new PdfDocument(new PdfWriter(filename)), PageSize.A4);
+            Document document = new Document(new PdfDocument(new PdfWriter(fileNamePath + ".pdf")), PageSize.A4);
             PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
             PdfFont boldFont = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
 
@@ -35,7 +34,7 @@ public class pdfUtil {
 
             // Retrieve marks list using marksQueryUtil
             document.add(new Paragraph("1. Retrieve Marks Data:"));
-            ResultSet res = mqu.marksBySub(sub);
+            ResultSet res = mqu.marksBySub(sub, type);
 
             Table table = new Table(new float[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 });
 
@@ -69,19 +68,19 @@ public class pdfUtil {
             
             
             document.add(new Paragraph("2. Lowest Marks by Subject:"));
-            int lowestMarks = mqu.lowestMarkBySub(sub);
+            int lowestMarks = mqu.lowestMarkBySub(sub, type);
             document.add(new Paragraph("Lowest Marks in " + sub + ": " + lowestMarks));
 
             document.add(new Paragraph("3. Highest Marks by Subject:"));
-            int highestMarks = mqu.highestMarkBySub(sub);
+            int highestMarks = mqu.highestMarkBySub(sub, type);
             document.add(new Paragraph("Highest Marks in " + sub + ": " + highestMarks));
 
             document.add(new Paragraph("4. Average Marks by Subject:"));
-            float avgMarks = mqu.avgMarkBySub(sub);
+            float avgMarks = mqu.avgMarkBySub(sub, type);
             document.add(new Paragraph("Average Marks in " + sub + ": " + avgMarks));
 
             document.add(new Paragraph("4. Pass percentage by Subject:"));
-            float passPerc = mqu.passPercentBySub(sub);
+            float passPerc = mqu.passPercentBySub(sub, type);
             document.add(new Paragraph("Pass percentage in " + sub + ": " + passPerc));
 
             document.close();

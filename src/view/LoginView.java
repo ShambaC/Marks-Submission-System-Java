@@ -121,7 +121,7 @@ public class LoginView extends JFrame {
         registerButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         forgot = new JLabel("<html><u>Forgot Password<u><html>", SwingConstants.CENTER);
-        gbc.gridwidth = 2;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.anchor = GridBagConstraints.PAGE_END;
 
         forgot.setForeground(Color.BLUE);
@@ -200,7 +200,7 @@ public class LoginView extends JFrame {
         regForm.add(backLoginBtn);
 
         //Forgot password page
-        forgotForm = new JPanel(new GridLayout(3, 2, 30, 15));
+        forgotForm = new JPanel(new GridLayout(4, 2, 30, 15));
         forgotForm.setPreferredSize(new Dimension(600, 250));
         forgotForm.setBackground(panelColor);
 
@@ -327,13 +327,13 @@ public class LoginView extends JFrame {
         LoginControl lCon = new LoginControl();
 
         // Add action listeners from control
-        loginButton.addActionListener(lCon.loginButtonALFactory(loginMailField, loginPassField, main));
+        loginButton.addActionListener(lCon.loginButtonALFactory(loginMailField, loginPassField, main, this));
         registerButton.addActionListener(lCon.registerButtonALFactory(loginMailField, loginPassField, regForm, loginForm, main));
         backLoginBtn.addActionListener(lCon.backLoginBtnALFactory(regForm, loginForm, main));
         forgot.addMouseListener(lCon.forgotMLFactory(loginForm, forgotForm, main));
         sendOTPBtn.addActionListener(lCon.sendOTPBtnALFactory(OTPobj, forgotMailField, OTPField, main, forgotForm, sendOTPBtn, cancelBtn, verifyOTPBtn, recancelBtn, timer));
         cancelBtn.addActionListener(lCon.cancelBtnALFactory(main, OTPField, resendOTPBtn, forgotMailField, forgotForm, loginForm));
-        resendOTPBtn.addActionListener(lCon.resendOTPBtnALFactory(OTPobj, main, forgotMailField, OTPField, forgotForm, sendOTPBtn, cancelBtn, verifyOTPBtn, recancelBtn, timer));
+        resendOTPBtn.addActionListener(lCon.resendOTPBtnALFactory(OTPobj, main, forgotMailField, OTPField, forgotForm, sendOTPBtn, cancelBtn, verifyOTPBtn, recancelBtn, resendOTPBtn, timer));
         verifyOTPBtn.addActionListener(lCon.verifyOTPBtnALFactory(OTPobj, OTPField, resendOTPBtn, verifyOTPBtn, recancelBtn, forgotForm, newPassLabel, newPassField, resetPassBtn, main, timer));
         newRegBtn.addActionListener(lCon.newRegBtnALFactory(main, regMailField, regPassField, regPassConfField));
         resetPassBtn.addActionListener(lCon.resetPassBtnALFactory(forgotMailField, newPassField, main, recancelBtn));

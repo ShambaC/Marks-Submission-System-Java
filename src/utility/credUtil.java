@@ -28,11 +28,24 @@ public class credUtil {
     }
 
     /**
+     * Re-initialize cred obj
+     */
+    private void credInit() {
+        userRepository userRepo = new userRepository(new storageRepository());
+        storageParams userParams = userRepo.retrieve();
+
+        for(userTO uTO : userParams.uTOList) {
+            creds.put(uTO.email, uTO.passHash);
+        }
+    }
+
+    /**
      * Checks the database to find if the mail exists
      * @param mail The email address to check against the database
      * @return  Whether the mail is found in DB
      */
     public boolean isMailExists(String mail) {
+        credInit();
         return creds.containsKey(mail);
     }
 
@@ -43,6 +56,7 @@ public class credUtil {
      * @return  The result of matching
      */
     public boolean isMailPassMatch(String mail, String pass) {
+        credInit();
         String obtainPass = creds.get(mail);
 
         return obtainPass.equals(pass);

@@ -2,6 +2,7 @@ package control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +15,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelListener;
@@ -32,9 +34,11 @@ import model.transferObjects.studentTO;
 import model.userdata.student;
 import model.userdata.user;
 import utility.DButil;
+import utility.EmailUtil;
 import utility.ExcelRow;
 import utility.ExcelUtil;
 import utility.marksQueryUtil;
+import utility.pdfUtil;
 
 public class MarksMgmtControl {
     public uploadBtnAL uploadBtnALFactory(JPanel mainPanel, DefaultListModel<user> model, DefaultListModel<String> subListModel) {
@@ -54,6 +58,12 @@ public class MarksMgmtControl {
     }
     public passBtnAL passBtnALFactory(JPanel main, JList<String> querySubList) {
         return new passBtnAL(main, querySubList);
+    }
+    public pdfButtonAL pdfButtonALFactory(JPanel mainPanel, JList<String> pdfSubList) {
+        return new pdfButtonAL(mainPanel, pdfSubList);
+    }
+    public sendPdfButtonAL sendPdfButtonALFactory(JPanel mainPanel, JList<String> pdfSubList, JTextField pdfEmailField) {
+        return new sendPdfButtonAL(mainPanel, pdfSubList, pdfEmailField);
     }
 }
 
@@ -112,9 +122,9 @@ class uploadBtnAL implements ActionListener {
                 subListModel.clear();
                 DButil dbUtil = DButil.getInstance();
                 try{
-                    ResultSet resSub = dbUtil.executeQueryStatement("select distinct(paperCode) from marks;");
+                    ResultSet resSub = dbUtil.executeQueryStatement("select distinct paperCode, paperType from marks;");
                     while(resSub.next()) {
-                        subListModel.addElement(resSub.getString("paperCode"));
+                        subListModel.addElement(resSub.getString("paperCode") + ":" + resSub.getString("paperType"));
                     }
                 }
                 catch(SQLException err) {
@@ -161,6 +171,7 @@ class studentListLSL implements ListSelectionListener {
             sidLabel.setVisible(false);
             marksLabel.setVisible(false);
             marksTable.setVisible(false);
+            marksHeader.setVisible(false);
 
             adminMail.setText("Admin Email ID: " + selectedUser);
             adminMail.setVisible(true);
@@ -317,5 +328,66 @@ class passBtnAL implements ActionListener {
         float passPerc = new marksQueryUtil().passPercentBySub(selectedSub.split(":")[0], selectedSub.split(":")[1]);
 
         JOptionPane.showMessageDialog(main, "The Pass percentage in subject " + selectedSub + " is: " + passPerc, "Result", JOptionPane.INFORMATION_MESSAGE);
+    }
+}
+
+class pdfButtonAL implements ActionListener {
+    JPanel mainPanel;
+    JList<String> pdfSubList;
+
+    public pdfButtonAL(JPanel mainPanel, JList<String> pdfSubList) {
+        this.mainPanel = mainPanel;
+        this.pdfSubList = pdfSubList;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JFileChooser fc = new JFileChooser();
+        int res = fc.showSaveDialog(mainPanel);
+
+        if(res == JFileChooser.APPROVE_OPTION) {
+            String filePath = fc.getSelectedFile().getAbsolutePath();
+            pdfUtil pUtil = new pdfUtil();
+
+            String selectedSub = (String) pdfSubList.getSelectedValue();
+            pUtil.generatePDF(selectedSub.split(":")[0], selectedSub.split(":")[1], filePath);
+
+            JOptionPane.showMessageDialog(mainPanel, "PDF saved", "Success", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+}
+
+class sendPdfButtonAL implements ActionListener {
+    JPanel mainPanel;
+    JList<String> pdfSubList;
+    JTextField pdfEmailField;
+
+    public sendPdfButtonAL(JPanel mainPanel, JList<String> pdfSubList, JTextField pdfEmailField) {
+        this.mainPanel = mainPanel;
+        this.pdfSubList = pdfSubList;
+        this.pdfEmailField = pdfEmailField;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(pdfEmailField.getText().isBlank()) {
+            JOptionPane.showMessageDialog(mainPanel, "Enter a valid email", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        pdfUtil pUtil = new pdfUtil();
+
+        String selectedSub = (String) pdfSubList.getSelectedValue();
+        String filePath = "./pdfGen/" + selectedSub.split(":")[0] + "-" + selectedSub.split(":")[1];
+        pUtil.generatePDF(selectedSub.split(":")[0], selectedSub.split(":")[1], filePath);
+
+        String toEmail = pdfEmailField.getText();
+
+        File f = new File(filePath + ".pdf");
+        EmailUtil eUtil = new EmailUtil();
+        eUtil.TLSMailAttatchment(toEmail, selectedSub + " report", f);
+        JOptionPane.showMessageDialog(mainPanel, "Mail sent", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+        f.delete();
     }
 }

@@ -84,7 +84,7 @@ public class userDAO {
      * @param passHash new hash
      */
     public void replaceField(String email, String passHash) {
-        String query = "update usertable set passHash = '" + email + "' where email = '" + passHash + "';";
+        String query = "update usertable set passHash = '" + passHash + "' where email = '" + email + "';";
 
         DButil dbUtil = DButil.getInstance();
         int res = dbUtil.executeUpdateStatement(query);
