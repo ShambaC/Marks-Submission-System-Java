@@ -3,6 +3,8 @@ package control;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -29,26 +31,41 @@ import model.transferObjects.studentTO;
 
 import model.userdata.student;
 import model.userdata.user;
-
+import utility.DButil;
 import utility.ExcelRow;
 import utility.ExcelUtil;
+import utility.marksQueryUtil;
 
 public class MarksMgmtControl {
-    public uploadBtnAL uploadBtnALFactory(JPanel mainPanel, DefaultListModel<user> model) {
-        return new uploadBtnAL(mainPanel, model);
+    public uploadBtnAL uploadBtnALFactory(JPanel mainPanel, DefaultListModel<user> model, DefaultListModel<String> subListModel) {
+        return new uploadBtnAL(mainPanel, model, subListModel);
     }
     public studentListLSL studentListLSLFactory(JList<user> studentList, JPanel detailsGroup, JLabel warningLabel, JLabel adminMail, JLabel sidLabel, JLabel marksLabel, JTable marksTable, JTableHeader marksHeader) {
         return new studentListLSL(studentList, detailsGroup, warningLabel, adminMail, sidLabel, marksLabel, marksTable, marksHeader);
+    }
+    public maxBtnAL maxBtnALFactory(JPanel main, JList<String> querySubList) {
+        return new maxBtnAL(main, querySubList);
+    }
+    public minBtnAL minBtnALFactory(JPanel main, JList<String> querySubList) {
+        return new minBtnAL(main, querySubList);
+    }
+    public avgBtnAL avgBtnALFactory(JPanel main, JList<String> querySubList) {
+        return new avgBtnAL(main, querySubList);
+    }
+    public passBtnAL passBtnALFactory(JPanel main, JList<String> querySubList) {
+        return new passBtnAL(main, querySubList);
     }
 }
 
 class uploadBtnAL implements ActionListener {
     JPanel mainPanel;
     DefaultListModel<user> model;
+    DefaultListModel<String> subListModel;
 
-    public uploadBtnAL(JPanel mainPanel, DefaultListModel<user> model) {
+    public uploadBtnAL(JPanel mainPanel, DefaultListModel<user> model, DefaultListModel<String> subListModel) {
         this.mainPanel = mainPanel;
         this.model = model;
+        this.subListModel = subListModel;
     }
 
     @Override
@@ -90,6 +107,18 @@ class uploadBtnAL implements ActionListener {
 
                 for(studentTO sTO : marksParams.sTOList) {
                     model.addElement(new student(Integer.toString(sTO.roll), sTO.coll, sTO.cate));
+                }
+
+                subListModel.clear();
+                DButil dbUtil = DButil.getInstance();
+                try{
+                    ResultSet resSub = dbUtil.executeQueryStatement("select distinct(paperCode) from marks;");
+                    while(resSub.next()) {
+                        subListModel.addElement(resSub.getString("paperCode"));
+                    }
+                }
+                catch(SQLException err) {
+                    System.err.println(err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage());
                 }
 
                 JOptionPane.showMessageDialog(mainPanel, "File parsed and added to DB", "Info", JOptionPane.INFORMATION_MESSAGE);
@@ -200,5 +229,93 @@ class studentListLSL implements ListSelectionListener {
             detailsGroup.revalidate();
             detailsGroup.repaint();
         }
+    }
+}
+
+class maxBtnAL implements ActionListener {
+    JPanel main;
+    JList<String> querySubList;
+
+    public maxBtnAL(JPanel main, JList<String> querySubList) {
+        this.main = main;
+        this.querySubList = querySubList;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(querySubList.getSelectedValue() == null) {
+            querySubList.setSelectedIndex(0);
+        }
+
+        String selectedSub = (String) querySubList.getSelectedValue();
+        int highestMarks = new marksQueryUtil().highestMarkBySub(selectedSub.split(":")[0], selectedSub.split(":")[1]);
+
+        JOptionPane.showMessageDialog(main, "The highest marks obtained in subject " + selectedSub + " is: " + highestMarks, "Result", JOptionPane.INFORMATION_MESSAGE);
+    }
+}
+
+class minBtnAL implements ActionListener {
+    JPanel main;
+    JList<String> querySubList;
+
+    public minBtnAL(JPanel main, JList<String> querySubList) {
+        this.main = main;
+        this.querySubList = querySubList;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(querySubList.getSelectedValue() == null) {
+            querySubList.setSelectedIndex(0);
+        }
+
+        String selectedSub = (String) querySubList.getSelectedValue();
+        int lowestMarks = new marksQueryUtil().lowestMarkBySub(selectedSub.split(":")[0], selectedSub.split(":")[1]);
+
+        JOptionPane.showMessageDialog(main, "The lowest marks obtained in subject " + selectedSub + " is: " + lowestMarks, "Result", JOptionPane.INFORMATION_MESSAGE);
+    }
+}
+
+class avgBtnAL implements ActionListener {
+    JPanel main;
+    JList<String> querySubList;
+
+    public avgBtnAL(JPanel main, JList<String> querySubList) {
+        this.main = main;
+        this.querySubList = querySubList;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(querySubList.getSelectedValue() == null) {
+            querySubList.setSelectedIndex(0);
+        }
+
+        String selectedSub = (String) querySubList.getSelectedValue();
+        float avgMarks = new marksQueryUtil().avgMarkBySub(selectedSub.split(":")[0], selectedSub.split(":")[1]);
+
+        JOptionPane.showMessageDialog(main, "The average marks obtained in subject " + selectedSub + " is: " + avgMarks, "Result", JOptionPane.INFORMATION_MESSAGE);
+    }
+}
+
+class passBtnAL implements ActionListener {
+    JPanel main;
+    JList<String> querySubList;
+
+    public passBtnAL(JPanel main, JList<String> querySubList) {
+        this.main = main;
+        this.querySubList = querySubList;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(querySubList.getSelectedValue() == null) {
+            querySubList.setSelectedIndex(0);
+        }
+
+        String selectedSub = (String) querySubList.getSelectedValue();
+        float passPerc = new marksQueryUtil().passPercentBySub(selectedSub.split(":")[0], selectedSub.split(":")[1]);
+
+        JOptionPane.showMessageDialog(main, "The Pass percentage in subject " + selectedSub + " is: " + passPerc, "Result", JOptionPane.INFORMATION_MESSAGE);
     }
 }

@@ -10,14 +10,14 @@ public class marksQueryUtil {
         dbUtil = DButil.getInstance();
     }
 
-    public ResultSet marksBySub(String sub) {
-        String query = "select * from marks where paperCode = '" + sub + "';";
+    public ResultSet marksBySub(String sub, String type) {
+        String query = "select * from marks where paperCode = '" + sub + "' and paperType = '" + type + "';";
 
         return dbUtil.executeQueryStatement(query);
     }
 
-    public int lowestMarkBySub(String sub) {
-        String query = "select min(ObtMarks) 'minMarks' from (select ObtMarks from marks where paperCode = '"+ sub + "') as tmp;";
+    public int lowestMarkBySub(String sub, String type) {
+        String query = "select min(ObtMarks) 'minMarks' from (select ObtMarks from marks where paperCode = '"+ sub + "' and paperType = '" + type + "') as tmp;";
 
         ResultSet res = dbUtil.executeQueryStatement(query);
 
@@ -34,8 +34,8 @@ public class marksQueryUtil {
         return minMarks;
     }
 
-    public int highestMarkBySub(String sub) {
-        String query = "select max(ObtMarks) 'maxMarks' from (select ObtMarks from marks where paperCode = '"+ sub + "') as tmp;";
+    public int highestMarkBySub(String sub, String type) {
+        String query = "select max(ObtMarks) 'maxMarks' from (select ObtMarks from marks where paperCode = '"+ sub + "' and paperType = '" + type + "') as tmp;";
 
         ResultSet res = dbUtil.executeQueryStatement(query);
 
@@ -52,8 +52,8 @@ public class marksQueryUtil {
         return maxMarks;
     }
 
-    public float avgMarkBySub(String sub) {
-        String query = "select avg(ObtMarks) 'avgMarks' from (select ObtMarks from marks where paperCode = '"+ sub + "') as tmp;";
+    public float avgMarkBySub(String sub, String type) {
+        String query = "select avg(ObtMarks) 'avgMarks' from (select ObtMarks from marks where paperCode = '"+ sub + "' and paperType = '" + type + "') as tmp;";
 
         ResultSet res = dbUtil.executeQueryStatement(query);
 
@@ -70,7 +70,7 @@ public class marksQueryUtil {
         return avgMarks;
     }
 
-    public float passPercentBySub(String sub) {
+    public float passPercentBySub(String sub, String type) {
         float passPerc = 0;
         try {
             int studentCount = 0;
@@ -79,7 +79,7 @@ public class marksQueryUtil {
             if(res.next())
                 studentCount = res.getInt("rows");
             int passNum = 0;
-            String passNumQuery = "select count(*) 'rows' from marks where paperCode = '" + sub + "' and ObtMarks > (30*FullMarks/100);";
+            String passNumQuery = "select count(*) 'rows' from marks where paperCode = '" + sub + "' and paperType = '" + type + "' and ObtMarks > (30*FullMarks/100);";
             res = dbUtil.executeQueryStatement(passNumQuery);
             if(res.next())
                 passNum = res.getInt("rows");

@@ -9,6 +9,7 @@ import model.transferObjects.userTO;
 import model.userdata.admin;
 import model.userdata.student;
 import model.userdata.user;
+import utility.DButil;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -17,6 +18,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -151,8 +154,22 @@ public class MarksMgmt extends JFrame {
         TitledBorder queryBorder = new TitledBorder(new EmptyBorder(30,10,10,10));
         queriesTab.setBorder(queryBorder);
         
-        JPanel queriesGroup = new JPanel(new GridLayout(3, 0, 20, 20));
+        JPanel queriesGroup = new JPanel(new GridLayout(5, 1, 20, 20));
         queriesGroup.setBackground(panelColor);
+
+        DefaultListModel<String> subListModel = new DefaultListModel<String>();
+        DButil dbUtil = DButil.getInstance();
+        try{
+            ResultSet res = dbUtil.executeQueryStatement("select distinct paperCode, paperType from marks;");
+            while(res.next()) {
+                subListModel.addElement(res.getString("paperCode") + ":" + res.getString("paperType"));
+            }
+        }
+        catch(SQLException err) {
+            System.err.println(err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage());
+        }
+        JList<String> querySubList = new JList<>(subListModel);
+        querySubList.setSelectedIndex(0);
 
         // Query Button
         JButton maxBtn = new JButton("Highest marks");
@@ -179,6 +196,7 @@ public class MarksMgmt extends JFrame {
         avgBtn.setBackground(bgColor);
         avgBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
+        queriesGroup.add(querySubList);
         queriesGroup.add(maxBtn);
         queriesGroup.add(minBtn);
         queriesGroup.add(avgBtn);
@@ -250,9 +268,12 @@ public class MarksMgmt extends JFrame {
 
         MarksMgmtControl mmCon = new MarksMgmtControl();
 
-        uploadBtn.addActionListener(mmCon.uploadBtnALFactory(mainPanel, model));
+        uploadBtn.addActionListener(mmCon.uploadBtnALFactory(mainPanel, model, subListModel));
         studentList.addListSelectionListener(mmCon.studentListLSLFactory(studentList, detailsGroup, warningLabel, adminMail, sidLabel, marksLabel, marksTable, marksHeader));
-
+        maxBtn.addActionListener(mmCon.maxBtnALFactory(mainPanel, querySubList));
+        minBtn.addActionListener(mmCon.minBtnALFactory(mainPanel, querySubList));
+        avgBtn.addActionListener(mmCon.avgBtnALFactory(mainPanel, querySubList));
+        passBtn.addActionListener(mmCon.passBtnALFactory(mainPanel, querySubList));
     }
 
 	
