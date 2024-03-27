@@ -29,7 +29,9 @@ import javax.swing.table.JTableHeader;
 import control.MarksMgmtControl;
 
 
-
+/**
+ * Class that stores the main UI of the main window
+ */
 public class MarksMgmt extends JFrame {
 
 	// initialize JList with model

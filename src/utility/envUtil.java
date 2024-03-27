@@ -11,7 +11,6 @@ import java.util.Map;
 /**
  * An Utility class to load env files into java projects
  */
-
 public class envUtil {
     /**
      * The map storing the key value pairs of the env file

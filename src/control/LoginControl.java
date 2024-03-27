@@ -22,6 +22,9 @@ import utility.credUtil;
 import view.LoginView;
 import view.MarksMgmt;
 
+/**
+ * Control class for the {@link LoginView Login view}
+ */
 public class LoginControl {
     /**
      * Method to hash a string using the SHA-256 algorithm

@@ -8,6 +8,9 @@ import java.util.List;
 import model.transferObjects.userTO;
 import utility.DButil;
 
+/**
+ * User Data Access Object for modifying the usertable in database
+ */
 public class userDAO {
     /**
      * Inserts a row into the user table

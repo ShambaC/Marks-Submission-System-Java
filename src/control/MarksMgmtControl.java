@@ -40,6 +40,11 @@ import utility.ExcelUtil;
 import utility.marksQueryUtil;
 import utility.pdfUtil;
 
+import view.MarksMgmt;
+
+/**
+ * Control class for the main UI, {@link MarksMgmt Marks Management class}
+ */
 public class MarksMgmtControl {
     public uploadBtnAL uploadBtnALFactory(JPanel mainPanel, DefaultListModel<user> model, DefaultListModel<String> subListModel) {
         return new uploadBtnAL(mainPanel, model, subListModel);

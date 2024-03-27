@@ -21,9 +21,17 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.borders.SolidBorder;
 
-
+/**
+ * Utility class to create PDF reports
+ */
 public class pdfUtil {
 
+    /**
+     * Method to generate PDF repors of particular subjects
+     * @param sub Subject code
+     * @param type Subject type
+     * @param fileNamePath Filepath to the PDF
+     */
     public void generatePDF(String sub, String type, String fileNamePath) {
         try {
             Document document = new Document(new PdfDocument(new PdfWriter(fileNamePath + ".pdf")), PageSize.A4);
@@ -92,8 +100,6 @@ public class pdfUtil {
             e.printStackTrace();
         }
         
-        
-        
-}
+    }
 
 }

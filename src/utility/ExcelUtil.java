@@ -13,24 +13,18 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+/**
+ * Utility class to read data from an excel sheet
+ */
 public class ExcelUtil {
 
-    // public static void main(String[] args) throws EncryptedDocumentException, IOException {
-    //     List<ExcelRow> rows = readExcel("Sheet1");
-    //     System.out.println("Course/Paper title" + "\t " + "Course/Paper code" + "\t " + "TH/PR/AI" + "\t" +
-    //             "Half" + "\t " + "Coll" + "\t " + "Cate" + "\t " +
-    //             "Number" + "\t " + "Full_marks" + "\t" + "Marks_obtained\n\n");
-    //     // for (ExcelRow row : rows) {
-    //     //     if (row.number != 0 || row.full_marks != 0 || !"0".equals(row.marks_obtained) && row.marks_obtained != null && !row.marks_obtained.isEmpty()) {
-    //     //         System.out.println(row.course_title + "   \t " + row.course_code + "              \t " + row.TH_PR_AI + "   \t" +
-    //     //                            row.half + "   \t " + row.coll + "   \t " + row.cate + "  \t  " +
-    //     //                            row.number + "  \t" + row.full_marks + "  \t  " + row.marks_obtained);
-    //     //     } else {
-    //     //         break;
-    //     //     }
-    //     // }
-    // }
-
+    /**
+     * Method to read data from an excel sheet and return the list of rows in it
+     * @param filePath Path to the excel sheet
+     * @return A list of rows containing data from the file
+     * @throws EncryptedDocumentException
+     * @throws IOException
+     */
     public List<ExcelRow> readExcel(String filePath) throws EncryptedDocumentException, IOException {
         List<ExcelRow> dataList = new ArrayList<>();
         try {
@@ -59,6 +53,11 @@ public class ExcelUtil {
         return dataList;
     }
 
+    /**
+     * Method to get string value from a cell
+     * @param cell cell to get value from
+     * @return String data
+     */
     private String getStringValue(Cell cell) {
         if (cell != null) {
             return cell.getStringCellValue();
@@ -66,6 +65,12 @@ public class ExcelUtil {
         return null;
     }
 
+    /**
+     * method to get numerical data from a cell
+     * <p> Will return 0 if data is string
+     * @param cell the cell to get data from
+     * @return Numerical data
+     */
     private int getNumericValue(Cell cell) {
         if (cell != null) {
             if (cell.getCellType() == CellType.NUMERIC) {

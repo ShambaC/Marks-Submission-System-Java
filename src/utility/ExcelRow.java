@@ -1,5 +1,8 @@
 package utility;
 
+/**
+ * Utility class to store data from rows of an Excel sheet
+ */
 public class ExcelRow {
     public String course_title;
     public String course_code;

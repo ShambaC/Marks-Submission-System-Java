@@ -44,7 +44,7 @@ public class OTPUtil {
         }
 
         String mailContent = "Hello User, \n\nYour OTP to reset password is: " + OTP;
-        String mailSubject = "OTP for Employee Management System";
+        String mailSubject = "OTP for Marks Submission System";
 
         // Send TLS mail
         mailUtil.TLSMail(mail, mailSubject, mailContent);

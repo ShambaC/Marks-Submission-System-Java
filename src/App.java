@@ -1,8 +1,11 @@
 import utility.DButil;
 import view.LoginView;
-import view.MarksMgmt;
 import conf.config;
 
+/**
+ * Runner class for the application
+ * <p> It initializes the Database and then runs the UI
+ */
 public class App {
     
     public static void main(String[] args) {
@@ -11,8 +14,5 @@ public class App {
 
          LoginView view = new LoginView();
          view.setVisible(true);
-
-    //    MarksMgmt mm = new MarksMgmt();
-    //    mm.setVisible(true);
     }
 }
