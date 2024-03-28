@@ -24,7 +24,7 @@ replay_pid*
 src/conf/config.java
 
 # Environment files
-src/env/.env
+src/.env
 
 # JavaDocs
 docs
