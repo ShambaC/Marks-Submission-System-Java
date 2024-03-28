@@ -13,11 +13,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /**
  * Utility class to perform SQL queries on mariaDB
  */
 
-public class DButil {
+public class DButil extends JFrame {
     /**
      * Static reference to the singleton variable
      */
@@ -90,6 +93,8 @@ public class DButil {
         }
         catch(SQLException err) {
             System.err.println(err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage());
+            JOptionPane.showMessageDialog(this, "SQL Error" + err.getErrorCode() + " " + err.getSQLState() + " " + err.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
         }
         catch(ClassNotFoundException err) {
             err.printStackTrace();

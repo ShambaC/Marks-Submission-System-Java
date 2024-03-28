@@ -13,6 +13,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import conf.config;
 
@@ -24,7 +26,7 @@ import java.util.Properties;
  * utility class to send mail using the SMTP protocol
  * <p>Sensitive details are in env file
  */
-public class EmailUtil {
+public class EmailUtil extends JFrame {
     private String SMTPHostName;
     private String SMTPport;
     private String SMTPUserName;
@@ -77,6 +79,7 @@ public class EmailUtil {
         }
         catch(Exception err) {
             err.printStackTrace();
+            JOptionPane.showMessageDialog(this, "An error occured while trying to send mail.\n" + err.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -179,6 +182,7 @@ public class EmailUtil {
         }
         catch(Exception err) {
             err.printStackTrace();
+            JOptionPane.showMessageDialog(this, "An error occured while trying to send mail.\n" + err.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
